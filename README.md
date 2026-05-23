@@ -51,3 +51,41 @@ python3 -m http.server 8080
 - **Theme-Farben:** dort und im `<meta name="theme-color">` in `index.html`
 - **Icons:** PNGs ersetzen, Dimensionen beibehalten
 - **Highscore-Speicher:** localStorage-Key ist `laborVirusHighscoreCinematic`
+
+## Server-Highscore-Liste
+
+Diese Version enthält eine echte Server-Highscore-Liste.
+
+Neue Dateien/Ordner:
+
+| Datei / Ordner              | Zweck                                      |
+|----------------------------|---------------------------------------------|
+| `api/highscore.php`        | PHP-API zum Lesen und Speichern der Scores  |
+| `data/highscores.json`     | gespeicherte Highscore-Daten                |
+| `data/.htaccess`           | schützt den Datenordner bei Apache          |
+
+### Voraussetzungen
+
+- Webserver mit PHP 7.4 oder neuer
+- Der Ordner `data` muss für PHP beschreibbar sein.
+- Alle Dateien gemeinsam hochladen, also `index.html`, `sw.js`, `api/` und `data/`.
+
+### Test
+
+Nach dem Upload im Browser aufrufen:
+
+```text
+api/highscore.php
+```
+
+Wenn alles funktioniert, kommt eine JSON-Antwort wie:
+
+```json
+{"ok":true,"scores":[]}
+```
+
+Wenn das Speichern nicht klappt, dem Ordner `data` Schreibrechte geben. Je nach Hoster z. B. 755 oder 775. Nur falls nötig 777 verwenden.
+
+### Sicherheit
+
+Die API begrenzt Name, Punktzahl und Zusatzdaten serverseitig und speichert nur die Top 20. Für ein kleines Browserspiel reicht das meistens. Gegen absichtliches Cheaten ist eine reine Browser-Spiel-Highscore-Liste grundsätzlich nicht vollständig geschützt, weil der Score vom Client kommt.
