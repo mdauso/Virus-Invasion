@@ -3,7 +3,7 @@
 // Cache-Name muss bei jedem Inhalts-Update inkrementiert werden, damit alte Versionen
 // beim nächsten Start verworfen werden.
 
-const CACHE_VERSION = 'v9-server-highscore';
+const CACHE_VERSION = 'v8-colored-viruses';
 const CACHE_NAME = 'virus-jagd-' + CACHE_VERSION;
 
 // Alle Assets relativ zum SW-Scope. Das Spiel selbst ist eine einzige HTML-Datei,
@@ -46,9 +46,6 @@ self.addEventListener('fetch', (event) => {
   // Cross-Origin Requests durchreichen
   const url = new URL(req.url);
   if (url.origin !== self.location.origin) return;
-
-  // Highscore-API nie cachen, sonst sieht man alte Listen oder POSTs werden gestört.
-  if (url.pathname.endsWith('/api/highscore.php')) return;
 
   // Navigation-Requests (HTML): Network-First mit Cache-Fallback,
   // damit Updates sichtbar werden, ohne dass Offline-Betrieb leidet.
