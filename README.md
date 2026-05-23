@@ -51,3 +51,7 @@ python3 -m http.server 8080
 - **Theme-Farben:** dort und im `<meta name="theme-color">` in `index.html`
 - **Icons:** PNGs ersetzen, Dimensionen beibehalten
 - **Highscore-Speicher:** localStorage-Key ist `laborVirusHighscoreCinematic`
+
+
+
+Hinweis v11: Die serverseitige Highscore-Funktion wurde entfernt. Diese Version ist vollständig statisch und kann direkt auf GitHub Pages gehostet werden.
