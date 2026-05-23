@@ -1,9 +1,9 @@
-// Service Worker für Labor Virus-Jagd PWA – Mobile-Fit Patch
+// Service Worker für Labor Virus-Jagd PWA – Mobile-Fit + Creepy Audio Patch
 // Strategie: Cache-First für statische Assets, mit Hintergrund-Update der HTML.
 // Cache-Name muss bei jedem Inhalts-Update inkrementiert werden, damit alte Versionen
 // beim nächsten Start verworfen werden.
 
-const CACHE_VERSION = 'v4-mobile-fit';
+const CACHE_VERSION = 'v5-creepy-audio';
 const CACHE_NAME = 'virus-jagd-' + CACHE_VERSION;
 
 // Alle Assets relativ zum SW-Scope. Das Spiel selbst ist eine einzige HTML-Datei,
