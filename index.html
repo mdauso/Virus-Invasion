@@ -2,7 +2,7 @@
 <html lang="de">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <title>Labor Virus-Jagd – Cinematic</title>
 <meta name="description" content="Cinematic Arcade Shooter – Rette die Menschheit vor dem Virusausbruch.">
 <meta name="theme-color" content="#080e14">
@@ -50,7 +50,64 @@ button{font:inherit}
 .explosion-particle{position:absolute;width:9px;height:9px;margin-left:-4.5px;margin-top:-4.5px;border-radius:50%;z-index:61;pointer-events:none;animation:particleBoom .48s ease-out forwards;background:radial-gradient(circle,#fff 0 18%,var(--pcol) 19% 72%,transparent 73%);box-shadow:0 0 8px var(--pcol)}@keyframes particleBoom{0%{transform:translate(0,0) scale(.7);opacity:1}100%{transform:translate(var(--tx),var(--ty)) scale(1.05);opacity:0}}
 .score-popup{position:absolute;z-index:63;color:#fff;font-weight:900;font-size:22px;text-shadow:0 0 12px rgba(0,0,0,.45);pointer-events:none;animation:scoreRise .7s ease-out forwards}@keyframes scoreRise{0%{transform:translate(-50%,-10px) scale(.8);opacity:0}15%{opacity:1}100%{transform:translate(-50%,-46px) scale(1.08);opacity:0}}
 #crosshair{position:fixed;z-index:90;width:42px;height:42px;margin-left:-21px;margin-top:-21px;border:2px solid rgba(255,255,255,.9);border-radius:50%;pointer-events:none;filter:drop-shadow(0 0 5px rgba(0,0,0,.8));display:none}#crosshair:before,#crosshair:after{content:"";position:absolute;background:rgba(255,255,255,.9)}#crosshair:before{left:50%;top:-9px;bottom:-9px;width:2px;transform:translateX(-50%)}#crosshair:after{top:50%;left:-9px;right:-9px;height:2px;transform:translateY(-50%)}.hitFlash{animation:hitFlash .11s ease-out}@keyframes hitFlash{50%{filter:brightness(1.12)}}
-@media(max-width:700px){#hud{padding:10px;font-size:14px}.panel{padding:8px 10px;border-radius:12px}#title{display:none}#crosshair{display:none!important}#bossAlert{top:calc(env(safe-area-inset-top,0) + 92px);font-size:13px}#comboDisplay{font-size:26px!important;top:calc(env(safe-area-inset-top,0) + 108px)!important}#pauseBtn{width:38px;height:38px;font-size:16px}}
+@media(max-width:700px),(max-height:500px) and (orientation:landscape){
+  /* Touch-Verhalten: kein Doppeltap-Zoom, kein Text-Select */
+  body{user-select:none;-webkit-user-select:none;-webkit-touch-callout:none}
+  #game{touch-action:manipulation}
+  /* Kompaktes HUD: nur Score/Zeit/Treffer, alles in einer Reihe */
+  #hud{padding:8px 12px;padding-top:calc(env(safe-area-inset-top,0) + 8px);padding-left:calc(env(safe-area-inset-left,0) + 10px);padding-right:calc(env(safe-area-inset-right,0) + 56px);font-size:13px;gap:6px;flex-wrap:nowrap;justify-content:flex-start}
+  .panel{padding:6px 10px;border-radius:12px;font-size:13px;letter-spacing:0;line-height:1.2;flex:0 1 auto;white-space:nowrap}
+  #title{display:none!important}
+  #highscorePanel,#soundBadge{display:none!important}
+  #crosshair{display:none!important}
+  #timeBar{left:10px;right:10px;top:calc(env(safe-area-inset-top,0) + 48px);height:4px}
+  #bossAlert{top:calc(env(safe-area-inset-top,0) + 58px);font-size:12px;padding:7px 13px}
+  #powerupStatus{top:calc(env(safe-area-inset-top,0) + 58px)}
+  .statusBadge{font-size:11px;padding:5px 10px}
+  #comboDisplay{font-size:24px!important;top:calc(env(safe-area-inset-top,0) + 92px)!important}
+  #comboDisplay .multi{font-size:11px;margin-top:2px}
+  #pauseBtn{width:42px;height:42px;font-size:16px;top:calc(env(safe-area-inset-top,0) + 8px);right:calc(env(safe-area-inset-right,0) + 10px)}
+  #startOverlay{padding:10px;align-items:start;padding-top:calc(env(safe-area-inset-top,0) + 14px);padding-bottom:calc(env(safe-area-inset-bottom,0) + 14px);overflow-y:auto}
+  .card{padding:20px 18px;border-radius:22px;max-height:none}
+  .card h1{font-size:clamp(26px,7.5vw,38px);margin-bottom:8px}
+  .card p{font-size:14px;margin:8px 0;line-height:1.42}
+  .settings-box{padding:11px;margin-top:10px}
+  .settings-title{font-size:13px;margin-bottom:8px}
+  .difficulty-row{gap:6px;margin:6px 0 4px}
+  .difficulty-btn{padding:9px 12px;min-width:0;flex:1 1 0;font-size:13px}
+  .option-row{gap:12px;font-size:14px}
+  input[type=checkbox]{width:20px;height:20px}
+  #startBtn{padding:14px 26px;font-size:17px;min-height:48px;margin-top:14px}
+  .highscore{margin-top:10px;font-size:14px}
+  #storyAgainBtn{margin-top:8px;font-size:12px}
+  #installBtn{margin-top:8px;font-size:12px;padding:7px 14px}
+  #pauseOverlay .card{padding:22px 20px}
+  #pauseOverlay h2{font-size:24px}
+  .gameBtn{padding:11px 18px;font-size:14px}
+  #updateToast{font-size:13px;padding:10px 14px;bottom:calc(env(safe-area-inset-bottom,0) + 14px)}
+}
+/* Sehr schmale Phones (iPhone SE etc.) */
+@media(max-width:380px){
+  #hud{padding-left:calc(env(safe-area-inset-left,0) + 8px);padding-right:calc(env(safe-area-inset-right,0) + 50px);gap:4px;font-size:12px}
+  .panel{padding:6px 8px;font-size:12px}
+  #pauseBtn{width:38px;height:38px;font-size:14px}
+  #bossAlert{font-size:11px;padding:6px 11px}
+}
+/* Phone in Landscape: sehr geringe Höhe → Card kompakter */
+@media(max-height:480px) and (orientation:landscape){
+  .card{padding:14px 18px}
+  .card h1{font-size:22px;margin-bottom:4px}
+  .card p{font-size:12px;margin:5px 0;line-height:1.35}
+  .settings-box{padding:8px 11px;margin-top:6px}
+  .settings-title{font-size:12px;margin-bottom:5px}
+  .difficulty-row{margin:5px 0 3px;gap:5px}
+  .difficulty-btn{padding:7px 10px;font-size:12px}
+  .option-row{margin-top:6px;font-size:13px;gap:14px}
+  #startBtn{padding:10px 22px;font-size:15px;min-height:42px;margin-top:9px}
+  .highscore{margin-top:7px;font-size:13px}
+  #storyAgainBtn,#installBtn{margin-top:5px;font-size:11px}
+  #startOverlay{align-items:start;padding-top:8px;overflow-y:auto}
+}
 #timeBar{position:fixed;left:18px;right:18px;top:calc(env(safe-area-inset-top,0) + 64px);height:5px;border-radius:999px;background:rgba(255,255,255,.1);overflow:hidden;z-index:79;pointer-events:none;opacity:0;transition:opacity .3s ease}
 #timeBar.show{opacity:1}
 #timeBarFill{height:100%;width:100%;background:linear-gradient(90deg,#67ffd3,#80ffda);border-radius:999px;transition:width .9s linear,background .3s ease;box-shadow:0 0 12px rgba(103,255,211,.45)}
@@ -129,15 +186,43 @@ button{font:inherit}
 #installBtn{display:none;margin-top:6px;background:none;border:1px solid rgba(103,255,211,.45);color:var(--accent);padding:8px 16px;border-radius:999px;font-weight:800;font-size:13px;cursor:pointer;letter-spacing:.3px}
 #installBtn:hover{background:rgba(103,255,211,.08)}
 #installBtn.show{display:inline-block}
-#updateToast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%) translateY(80px);z-index:300;padding:12px 18px;border-radius:999px;background:rgba(7,18,26,.94);border:1px solid var(--accent);color:var(--text);font-weight:700;font-size:14px;box-shadow:0 10px 30px rgba(0,0,0,.45);display:flex;gap:12px;align-items:center;transition:transform .35s cubic-bezier(.32,1.5,.62,1);max-width:92vw}
-#updateToast.show{transform:translateX(-50%) translateY(0)}
+#updateToast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%) translateY(calc(100% + 40px));z-index:300;padding:12px 18px;border-radius:999px;background:rgba(7,18,26,.94);border:1px solid var(--accent);color:var(--text);font-weight:700;font-size:14px;box-shadow:0 10px 30px rgba(0,0,0,.45);display:flex;gap:12px;align-items:center;transition:transform .35s cubic-bezier(.32,1.5,.62,1),opacity .35s ease;max-width:92vw;opacity:0;pointer-events:none}
+#updateToast.show{transform:translateX(-50%) translateY(0);opacity:1;pointer-events:auto}
 #updateToast button{border:0;border-radius:999px;padding:6px 14px;background:linear-gradient(180deg,#80ffda,#27d89e);color:#04120e;font-weight:900;cursor:pointer;font-size:13px}
-@media(max-width:700px){.introTimestamp,.introCounter{font-size:10px;top:42px}.introFrame{inset:50px 14px}#introSkip{bottom:44px;font-size:12px;padding:7px 13px}.introProgress{bottom:44px}.warnStripe{height:22px}}
+@media(max-width:700px),(max-height:500px) and (orientation:landscape){
+  .introTimestamp,.introCounter{font-size:10px;top:calc(env(safe-area-inset-top,0) + 38px)}
+  .introTimestamp{left:14px}.introCounter{right:14px}
+  .introFrame{inset:calc(env(safe-area-inset-top,0) + 56px) 14px calc(env(safe-area-inset-bottom,0) + 80px);padding:12px;justify-content:center;overflow-y:auto}
+  .introIcon{font-size:64px;margin-bottom:10px}
+  .introBadge{font-size:10px;padding:5px 11px;margin-bottom:10px;letter-spacing:2px}
+  .introTitle{font-size:clamp(22px,6.5vw,32px);margin-bottom:12px;line-height:1.18}
+  .introText{font-size:15px;line-height:1.5;max-width:100%;padding:0 4px;margin-bottom:14px}
+  .introHero{font-size:18px;margin-bottom:4px}
+  .startMission{padding:13px 28px;font-size:15px;letter-spacing:1.5px;margin-top:10px}
+  #introSkip{bottom:calc(env(safe-area-inset-bottom,0) + 38px);right:14px;font-size:12px;padding:7px 13px;min-height:36px}
+  .introProgress{bottom:calc(env(safe-area-inset-bottom,0) + 44px);gap:6px}
+  .introDot{width:7px;height:7px}
+  .warnStripe{height:18px}
+}
+/* Phone in Landscape — Intro extrem flach */
+@media(max-height:480px) and (orientation:landscape){
+  .introFrame{inset:46px 14px 60px;padding:8px}
+  .introIcon{font-size:40px;margin-bottom:5px}
+  .introBadge{font-size:9px;padding:3px 8px;margin-bottom:6px}
+  .introTitle{font-size:18px;margin-bottom:6px;line-height:1.15}
+  .introText{font-size:12px;line-height:1.4;margin-bottom:8px}
+  .introHero{font-size:14px}
+  .startMission{padding:9px 20px;font-size:13px;margin-top:6px}
+  #introSkip{bottom:8px}
+  .introProgress{bottom:12px}
+  .warnStripe{height:14px}
+  .introTimestamp,.introCounter{top:32px}
+}
 </style>
 </head>
 <body>
 <main id="game"><div class="particle-layer" id="particleLayer"></div><div class="mist"></div></main>
-<div id="hud"><div class="panel" id="title">🧪 Labor Virus-Jagd – Cinematic</div><div class="panel">Punkte: <span id="score">0</span></div><div class="panel">Zeit: <span id="time">45</span>s</div><div class="panel">Treffer: <span id="hits">0</span></div><div class="panel">Highscore: <span id="highscoreHud">0</span></div><div class="panel" id="soundBadge">🔊 Sound an</div></div>
+<div id="hud"><div class="panel" id="title">🧪 Labor Virus-Jagd – Cinematic</div><div class="panel">Punkte: <span id="score">0</span></div><div class="panel">Zeit: <span id="time">45</span>s</div><div class="panel">Treffer: <span id="hits">0</span></div><div class="panel" id="highscorePanel">Highscore: <span id="highscoreHud">0</span></div><div class="panel" id="soundBadge">🔊 Sound an</div></div>
 <div id="bossAlert">⚠ Boss-Virus erschienen!</div><div id="crosshair"></div>
 <div id="timeBar"><div id="timeBarFill"></div></div>
 <div id="comboDisplay"></div>
@@ -200,7 +285,12 @@ function beep(freq,duration,type,volume){if(!effectsEnabled)return;try{ensureAud
 function soundHit(){beep(620,.045,"square",.045);setTimeout(function(){beep(940,.035,"square",.04)},35)}function soundMiss(){beep(160,.06,"sawtooth",.03)}function soundStart(){beep(420,.05,"sine",.05);setTimeout(function(){beep(690,.06,"sine",.05)},70)}function soundBossHit(){beep(260,.07,"triangle",.055);setTimeout(function(){beep(200,.08,"triangle",.05)},40)}function soundBossDead(){beep(180,.06,"sawtooth",.05);setTimeout(function(){beep(260,.08,"square",.05)},40);setTimeout(function(){beep(420,.11,"sine",.05)},90)}
 function startMusic(){stopMusic();if(!musicEnabled)return;try{ensureAudio();if(!audioCtx)return;var baseGain=audioCtx.createGain();baseGain.gain.value=.018;baseGain.connect(audioCtx.destination);var osc1=audioCtx.createOscillator();osc1.type="sine";osc1.frequency.value=110;var osc2=audioCtx.createOscillator();osc2.type="triangle";osc2.frequency.value=165;var gain2=audioCtx.createGain();gain2.gain.value=.5;osc1.connect(baseGain);osc2.connect(gain2);gain2.connect(baseGain);osc1.start();osc2.start();ambientNodes=[osc1,osc2,baseGain,gain2];var notes=[110,123.47,130.81,146.83],idx=0;musicPulseTimer=setInterval(function(){idx=(idx+1)%notes.length;osc1.frequency.setTargetAtTime(notes[idx],audioCtx.currentTime,.2);osc2.frequency.setTargetAtTime(notes[(idx+1)%notes.length]*1.5,audioCtx.currentTime,.2)},1200)}catch(e){}}
 function stopMusic(){if(musicPulseTimer){clearInterval(musicPulseTimer);musicPulseTimer=null}ambientNodes.forEach(function(node){try{node.stop&&node.stop()}catch(e){}try{node.disconnect&&node.disconnect()}catch(e){}});ambientNodes=[]}
-function rand(min,max){return Math.random()*(max-min)+min}function updateHud(){scoreEl.textContent=score;timeEl.textContent=timeLeft;hitsEl.textContent=hits;updateTimeBar()}function clearTimers(){if(spawnTimer)clearInterval(spawnTimer);if(clockTimer)clearInterval(clockTimer);if(difficultyTimer)clearInterval(difficultyTimer);if(powerupTimer)clearTimeout(powerupTimer);if(comboTimer)clearTimeout(comboTimer);if(frenzyTimer)clearTimeout(frenzyTimer);spawnTimer=null;clockTimer=null;difficultyTimer=null;powerupTimer=null;comboTimer=null;frenzyTimer=null}
+function rand(min,max){return Math.random()*(max-min)+min}
+function isMobile(){return window.innerWidth<=700||(window.innerHeight<=500&&window.matchMedia("(orientation: landscape)").matches)}
+function topSpawnY(){return isMobile()?130:90}
+function bottomSpawnPad(){return isMobile()?100:75}
+function sidePad(){return isMobile()?20:34}
+function updateHud(){scoreEl.textContent=score;timeEl.textContent=timeLeft;hitsEl.textContent=hits;updateTimeBar()}function clearTimers(){if(spawnTimer)clearInterval(spawnTimer);if(clockTimer)clearInterval(clockTimer);if(difficultyTimer)clearInterval(difficultyTimer);if(powerupTimer)clearTimeout(powerupTimer);if(comboTimer)clearTimeout(comboTimer);if(frenzyTimer)clearTimeout(frenzyTimer);spawnTimer=null;clockTimer=null;difficultyTimer=null;powerupTimer=null;comboTimer=null;frenzyTimer=null}
 function updateTimeBar(){if(!maxTime)return;var pct=Math.max(0,timeLeft/maxTime*100);timeBarFill.style.width=pct+"%";timeBar.classList.toggle("warning",timeLeft<=15&&timeLeft>8);timeBar.classList.toggle("critical",timeLeft<=8)}
 function getMultiplier(){var base=combo>=10?3:combo>=6?2:combo>=3?1.5:1;return frenzyActive?base*2:base}
 function showCombo(){scoreMultiplier=getMultiplier();if(combo>=3){comboDisplay.innerHTML=combo+"x COMBO<span class='multi'>"+scoreMultiplier+"× PUNKTE</span>";comboDisplay.classList.remove("show");void comboDisplay.offsetWidth;comboDisplay.classList.add("show")}else{comboDisplay.classList.remove("show")}}
@@ -212,7 +302,7 @@ function shakeScreen(){game.classList.remove("shake");void game.offsetWidth;game
 function refreshPowerupStatus(){powerupStatus.innerHTML="";if(frenzyActive){var b=document.createElement("div");b.className="statusBadge";b.id="frenzyBadge";b.textContent="⚡ FRENZY";powerupStatus.appendChild(b)}}
 function activateFrenzy(ms){frenzyActive=true;game.classList.add("frenzy");refreshPowerupStatus();if(frenzyTimer)clearTimeout(frenzyTimer);frenzyTimer=setTimeout(function(){frenzyActive=false;game.classList.remove("frenzy");refreshPowerupStatus();scoreMultiplier=getMultiplier()},ms);scoreMultiplier=getMultiplier();soundPowerup()}
 function soundPowerup(){beep(660,.08,"sine",.05);setTimeout(function(){beep(990,.08,"sine",.05)},80);setTimeout(function(){beep(1320,.1,"sine",.05)},160)}
-function spawnPowerup(){if(!running||paused)return;var types=["time","frenzy"],type=types[Math.floor(Math.random()*types.length)],pu=document.createElement("div"),size=72,padding=40,x=rand(padding,Math.max(padding,window.innerWidth-size-padding)),y=rand(110,Math.max(120,window.innerHeight-size-100));pu.className="powerup "+type;pu.style.setProperty("--x",x+"px");pu.style.setProperty("--y",y+"px");pu.textContent=type==="time"?"⏱":"⚡";pu.dataset.type=type;pu.addEventListener("click",collectPowerup,false);pu.addEventListener("touchstart",collectPowerup,{passive:false});game.appendChild(pu);setTimeout(function(){if(pu.parentNode)pu.parentNode.removeChild(pu)},5000)}
+function spawnPowerup(){if(!running||paused)return;var types=["time","frenzy"],type=types[Math.floor(Math.random()*types.length)],pu=document.createElement("div"),size=72,padding=sidePad(),topY=topSpawnY()+20,botPad=bottomSpawnPad()+25,x=rand(padding,Math.max(padding,window.innerWidth-size-padding)),y=rand(topY,Math.max(topY+20,window.innerHeight-size-botPad));pu.className="powerup "+type;pu.style.setProperty("--x",x+"px");pu.style.setProperty("--y",y+"px");pu.textContent=type==="time"?"⏱":"⚡";pu.dataset.type=type;pu.addEventListener("click",collectPowerup,false);pu.addEventListener("touchstart",collectPowerup,{passive:false});game.appendChild(pu);setTimeout(function(){if(pu.parentNode)pu.parentNode.removeChild(pu)},5000)}
 function collectPowerup(event){if(event){event.preventDefault();event.stopPropagation()}if(!running||paused)return;var pu=event.currentTarget,type=pu.dataset.type,rect=pu.getBoundingClientRect(),cx=rect.left+rect.width/2,cy=rect.top+rect.height/2;if(type==="time"){timeLeft=Math.min(maxTime+10,timeLeft+5);createScorePopup(cx,cy,"+5s","#80ffda",26);createExplosion(cx,cy,"#27d89e",14,3);soundPowerup();updateHud()}else if(type==="frenzy"){activateFrenzy(5000);createScorePopup(cx,cy,"⚡ FRENZY!","#ffd968",24);createExplosion(cx,cy,"#ff9f4d",16,3.5)}if(pu.parentNode)pu.parentNode.removeChild(pu)}
 function schedulePowerup(){if(!running||paused)return;var delay=rand(9000,15000);powerupTimer=setTimeout(function(){spawnPowerup();schedulePowerup()},delay)}
 function pauseGame(){if(!running||paused)return;paused=true;clearTimers();stopMusic();pauseOverlay.classList.add("show");pauseBtn.textContent="▶"}
@@ -226,8 +316,8 @@ function stopGame(){running=false;paused=false;clearTimers();game.classList.remo
 function tick(){timeLeft--;updateHud();if(timeLeft<=0)stopGame()}function increaseDifficulty(){if(spawnTimer)clearInterval(spawnTimer);spawnDelay=Math.max(selectedDifficulty==="hard"?280:340,spawnDelay-(selectedDifficulty==="hard"?110:90));spawnTimer=setInterval(spawnEnemy,spawnDelay)}
 function addBossHealthBar(virus,hp){var hpWrap=document.createElement("div");hpWrap.className="boss-hp";var hpFill=document.createElement("div");hpFill.className="boss-hp-fill";hpWrap.appendChild(hpFill);virus.appendChild(hpWrap);virus._hpFill=hpFill;virus._maxHp=hp}
 function spawnEnemy(){if(!running)return;if(hits>=nextBossAt&&bossSpawnedThisRound<3){spawnBoss();bossSpawnedThisRound++;nextBossAt+=12;return}spawnStandardVirus()}
-function spawnStandardVirus(){var virus=document.createElement("div"),isBonus=Math.random()<.17,size=rand(72,118),padding=34,maxX=Math.max(padding,window.innerWidth-size-padding),maxY=Math.max(100,window.innerHeight-size-75),x=rand(padding,maxX),y=rand(90,maxY);virus.className="virus"+(isBonus?" bonus":"");virus.style.setProperty("--size",size+"px");virus.style.setProperty("--x",x+"px");virus.style.setProperty("--y",y+"px");virus.dataset.points=isBonus?28:Math.round(140-size);virus.dataset.bonus=isBonus?"1":"0";virus.dataset.hp="1";virus.addEventListener("click",hitVirus,false);virus.addEventListener("touchstart",hitVirus,{passive:false});game.appendChild(virus);var life=isBonus?rand(900,1300):rand(1250,2100);setTimeout(function(){if(virus.parentNode){virus.parentNode.removeChild(virus);misses++;resetCombo()}},life)}
-function spawnBoss(){var diff=difficultyMap[selectedDifficulty],virus=document.createElement("div"),size=selectedDifficulty==="hard"?185:170,padding=50,maxX=Math.max(padding,window.innerWidth-size-padding),maxY=Math.max(120,window.innerHeight-size-110),x=rand(padding,maxX),y=rand(110,maxY);virus.className="virus boss";virus.style.setProperty("--size",size+"px");virus.style.setProperty("--x",x+"px");virus.style.setProperty("--y",y+"px");virus.dataset.points=diff.bossPoints;virus.dataset.bonus="0";virus.dataset.hp=String(diff.bossHp);virus.dataset.boss="1";addBossHealthBar(virus,diff.bossHp);virus.addEventListener("click",hitVirus,false);virus.addEventListener("touchstart",hitVirus,{passive:false});game.appendChild(virus);flashBossAlert();setTimeout(function(){if(virus.parentNode){virus.parentNode.removeChild(virus);misses+=2;resetCombo()}},selectedDifficulty==="hard"?4600:5400)}
+function spawnStandardVirus(){var virus=document.createElement("div"),isBonus=Math.random()<.17,size=rand(72,118),padding=sidePad(),topY=topSpawnY(),botPad=bottomSpawnPad(),maxX=Math.max(padding,window.innerWidth-size-padding),maxY=Math.max(topY+10,window.innerHeight-size-botPad),x=rand(padding,maxX),y=rand(topY,maxY);virus.className="virus"+(isBonus?" bonus":"");virus.style.setProperty("--size",size+"px");virus.style.setProperty("--x",x+"px");virus.style.setProperty("--y",y+"px");virus.dataset.points=isBonus?28:Math.round(140-size);virus.dataset.bonus=isBonus?"1":"0";virus.dataset.hp="1";virus.addEventListener("click",hitVirus,false);virus.addEventListener("touchstart",hitVirus,{passive:false});game.appendChild(virus);var life=isBonus?rand(900,1300):rand(1250,2100);setTimeout(function(){if(virus.parentNode){virus.parentNode.removeChild(virus);misses++;resetCombo()}},life)}
+function spawnBoss(){var diff=difficultyMap[selectedDifficulty],virus=document.createElement("div"),baseSize=selectedDifficulty==="hard"?185:170,size=isMobile()?Math.min(baseSize,Math.floor(window.innerWidth*0.42)):baseSize,padding=isMobile()?16:50,topY=Math.max(topSpawnY()+10,isMobile()?140:110),botPad=isMobile()?110:110,maxX=Math.max(padding,window.innerWidth-size-padding),maxY=Math.max(topY+10,window.innerHeight-size-botPad),x=rand(padding,maxX),y=rand(topY,maxY);virus.className="virus boss";virus.style.setProperty("--size",size+"px");virus.style.setProperty("--x",x+"px");virus.style.setProperty("--y",y+"px");virus.dataset.points=diff.bossPoints;virus.dataset.bonus="0";virus.dataset.hp=String(diff.bossHp);virus.dataset.boss="1";addBossHealthBar(virus,diff.bossHp);virus.addEventListener("click",hitVirus,false);virus.addEventListener("touchstart",hitVirus,{passive:false});game.appendChild(virus);flashBossAlert();setTimeout(function(){if(virus.parentNode){virus.parentNode.removeChild(virus);misses+=2;resetCombo()}},selectedDifficulty==="hard"?4600:5400)}
 function hitVirus(event){if(!running||paused)return;if(event){event.preventDefault();event.stopPropagation()}var virus=event.currentTarget,isBoss=virus.dataset.boss==="1",hp=Number(virus.dataset.hp||1),rect=virus.getBoundingClientRect(),cx=rect.left+rect.width/2,cy=rect.top+rect.height/2;if(isBoss&&hp>1){hp-=1;virus.dataset.hp=String(hp);if(virus._hpFill&&virus._maxHp)virus._hpFill.style.width=hp/virus._maxHp*100+"%";createExplosion(cx,cy,"#b58cff",10,2.5);createScorePopup(cx,cy,"Treffer!","#efdfff",18);soundBossHit();return}var basePoints=Number(virus.dataset.points||0);addCombo();var mult=getMultiplier(),points=Math.round(basePoints*mult);score+=points;hits++;createSplat(cx,cy,virus.dataset.bonus==="1",isBoss);createExplosion(cx,cy,isBoss?"#b58cff":(virus.dataset.bonus==="1"?"#48f5b8":"#ff496f"),isBoss?18:12,isBoss?4:3);var popText=mult>1?"+"+points+" ("+mult+"×)":"+"+points;createScorePopup(cx,cy,popText,isBoss?"#efdfff":(mult>1?"#ffd968":"#fff"),isBoss?28:22);if(virus.parentNode)virus.parentNode.removeChild(virus);game.classList.add("hitFlash");setTimeout(function(){game.classList.remove("hitFlash")},120);if(isBoss){soundBossDead();shakeScreen()}else soundHit();if(score>highscore){highscore=score;localStorage.setItem("laborVirusHighscoreCinematic",String(highscore));updateHighscoreDisplay()}updateHud()}
 function createSplat(x,y,bonus,boss){var splat=document.createElement("div");splat.className="splat";splat.style.left=x+"px";splat.style.top=y+"px";if(bonus)splat.style.filter="hue-rotate(105deg)";if(boss)splat.style.filter="hue-rotate(255deg)";game.appendChild(splat);setTimeout(function(){if(splat.parentNode)splat.parentNode.removeChild(splat)},430)}
 function createExplosion(x,y,color,count,scale){var ring=document.createElement("div");ring.className="explosion-ring";ring.style.left=x+"px";ring.style.top=y+"px";ring.style.borderColor=color;game.appendChild(ring);setTimeout(function(){if(ring.parentNode)ring.parentNode.removeChild(ring)},450);for(var i=0;i<count;i++){var p=document.createElement("div");p.className="explosion-particle";p.style.left=x+"px";p.style.top=y+"px";p.style.setProperty("--pcol",color);p.style.setProperty("--tx",Math.cos(Math.PI*2*i/count)*rand(20,60)*scale/3+"px");p.style.setProperty("--ty",Math.sin(Math.PI*2*i/count)*rand(20,60)*scale/3+"px");game.appendChild(p);setTimeout(function(node){return function(){if(node.parentNode)node.parentNode.removeChild(node)}}(p),500)}}
