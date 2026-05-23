@@ -3,7 +3,7 @@
 // Cache-Name muss bei jedem Inhalts-Update inkrementiert werden, damit alte Versionen
 // beim nächsten Start verworfen werden.
 
-const CACHE_VERSION = 'v16-rankpoints-12000';
+const CACHE_VERSION = 'v18-cinematic-intro-plus';
 const CACHE_NAME = 'virus-jagd-' + CACHE_VERSION;
 
 // Alle Assets relativ zum SW-Scope. Das Spiel selbst ist eine einzige HTML-Datei,
@@ -17,6 +17,7 @@ const PRECACHE_URLS = [
   './icon-maskable-512.png',
   './apple-touch-icon.png',
   './favicon-64.png',
+  './intro/virus_invasion_intro.png',
   './ranks/rank_assistent.png',
   './ranks/rank_analyst.png',
   './ranks/rank_virologe.png',
