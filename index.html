@@ -235,7 +235,7 @@ html,body{min-height:var(--app-height);overscroll-behavior:none}
 
 @media(max-width:700px),(max-height:500px) and (orientation:landscape){
   html,body{height:var(--app-height);min-height:var(--app-height);overflow:hidden}
-  #game{height:var(--app-height);min-height:var(--app-height);max-height:var(--app-height);background-position:left center;background-size:cover}
+  #game{height:var(--app-height);min-height:var(--app-height);max-height:var(--app-height);background-position:center center!important;background-size:contain!important;background-repeat:no-repeat!important;background-color:#080e14!important}
   #hud{top:0!important;padding-top:calc(env(safe-area-inset-top,0px) + 7px)!important;padding-left:calc(env(safe-area-inset-left,0px) + 8px)!important;padding-right:calc(env(safe-area-inset-right,0px) + 52px)!important;gap:5px!important;flex-wrap:nowrap!important;max-width:100vw;overflow:hidden}
   .panel{font-size:12px!important;padding:6px 8px!important;min-width:0!important;max-width:32vw!important;overflow:hidden;text-overflow:ellipsis}
   #timeBar{top:calc(env(safe-area-inset-top,0px) + 47px)!important;left:10px!important;right:10px!important;height:4px!important}
@@ -262,7 +262,7 @@ html,body{min-height:var(--app-height);overscroll-behavior:none}
 }
 
 @media(max-width:360px){
-  #game{background-position:12% center!important}
+  #game{background-position:center center!important;background-size:contain!important}
   #hud{padding-right:calc(env(safe-area-inset-right,0px) + 46px)!important;gap:3px!important}
   .panel{font-size:11px!important;padding:5px 6px!important;max-width:31vw!important}
   #pauseBtn{width:36px!important;height:36px!important;font-size:13px!important}
@@ -272,7 +272,7 @@ html,body{min-height:var(--app-height);overscroll-behavior:none}
 }
 
 @media(max-height:430px) and (orientation:landscape){
-  #game{background-position:20% center!important}
+  #game{background-position:center center!important;background-size:cover!important}
   #hud{padding-top:calc(env(safe-area-inset-top,0px) + 5px)!important}
   #timeBar{top:calc(env(safe-area-inset-top,0px) + 40px)!important}
   #startOverlay .card{padding:10px 14px!important}
