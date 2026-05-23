@@ -3,7 +3,7 @@
 // Cache-Name muss bei jedem Inhalts-Update inkrementiert werden, damit alte Versionen
 // beim nächsten Start verworfen werden.
 
-const CACHE_VERSION = 'v14-mobile-fullscreen-bg';
+const CACHE_VERSION = 'v15-ranks-story-local';
 const CACHE_NAME = 'virus-jagd-' + CACHE_VERSION;
 
 // Alle Assets relativ zum SW-Scope. Das Spiel selbst ist eine einzige HTML-Datei,
@@ -16,7 +16,12 @@ const PRECACHE_URLS = [
   './icon-512.png',
   './icon-maskable-512.png',
   './apple-touch-icon.png',
-  './favicon-64.png'
+  './favicon-64.png',
+  './ranks/rank_assistent.png',
+  './ranks/rank_analyst.png',
+  './ranks/rank_virologe.png',
+  './ranks/rank_seuchenjaeger.png',
+  './ranks/rank_elite.png'
 ];
 
 self.addEventListener('install', (event) => {
