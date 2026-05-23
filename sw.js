@@ -3,7 +3,7 @@
 // Cache-Name muss bei jedem Inhalts-Update inkrementiert werden, damit alte Versionen
 // beim nächsten Start verworfen werden.
 
-const CACHE_VERSION = 'v18-cinematic-intro-plus';
+const CACHE_VERSION = 'v19-eye-position-fix';
 const CACHE_NAME = 'virus-jagd-' + CACHE_VERSION;
 
 // Alle Assets relativ zum SW-Scope. Das Spiel selbst ist eine einzige HTML-Datei,
