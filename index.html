@@ -173,9 +173,14 @@ button{font:inherit}
 .introText{font-size:clamp(15px,2.6vw,21px);line-height:1.55;max-width:680px;color:rgba(255,255,255,.86);margin:0 0 22px;text-shadow:0 1px 4px rgba(0,0,0,.7);font-family:Georgia,serif;font-style:italic}
 .introHero{font-size:clamp(20px,3.5vw,30px);color:var(--accent);font-weight:900;letter-spacing:.5px;text-shadow:0 0 20px rgba(103,255,211,.55);font-style:normal;font-family:inherit;margin-bottom:6px}.introArt{width:min(90vw,940px);max-width:100%;max-height:52vh;object-fit:contain;border-radius:24px;border:1px solid rgba(255,255,255,.12);box-shadow:0 18px 50px rgba(0,0,0,.42),0 0 34px rgba(255,60,60,.16);animation:introArtPulse 4.5s ease-in-out infinite alternate}.introText.splashText{max-width:760px;font-style:normal;font-family:inherit;font-weight:700;color:rgba(255,245,245,.96);text-shadow:0 2px 10px rgba(0,0,0,.82)}
 @keyframes introArtPulse{from{transform:scale(1)}to{transform:scale(1.025)}}
+.portraitSplash{inset:0!important;padding:0!important;overflow:hidden!important;background:#000!important}
+.portraitSplash .introImageWrap{position:absolute;inset:0;display:block;overflow:hidden;background:#000}
+.portraitSplash .portraitIntroArt{width:100%!important;height:100%!important;max-width:none!important;max-height:none!important;object-fit:cover!important;object-position:center center!important;border:0!important;border-radius:0!important;box-shadow:none!important;animation:portraitIntroZoom 7.2s ease-in-out infinite alternate}
+@keyframes portraitIntroZoom{from{transform:scale(1)}to{transform:scale(1.025)}}
+
 .splashFrame{overflow:hidden;inset:0!important;padding:0!important;justify-content:stretch!important;align-items:stretch!important}
 .introWarningRibbon{display:inline-flex;align-items:center;gap:8px;padding:8px 16px;border:1px solid rgba(255,90,90,.38);border-radius:999px;background:rgba(120,0,0,.42);color:#ffd1d1;font-weight:900;letter-spacing:1.2px;text-transform:uppercase;box-shadow:0 0 20px rgba(255,40,40,.18);animation:warningPulse 1.35s ease-in-out infinite}
-.introSplashTitle{margin-top:8px;font-size:clamp(22px,4.8vw,44px);font-weight:1000;line-height:1.02;letter-spacing:.2px;text-transform:uppercase;color:#ff4b4b;text-shadow:0 0 10px rgba(255,20,20,.55),0 0 22px rgba(255,20,20,.28),2px 2px 0 #220000,-2px -2px 0 #220000;animation:titleSlam .9s cubic-bezier(.17,.89,.32,1.2),titleFlicker 2.5s ease-in-out infinite 1s;max-width:min(88vw,760px);word-break:break-word}
+.introSplashTitle{margin-top:4px;font-size:clamp(18px,4.1vw,34px);font-weight:1000;line-height:1.0;letter-spacing:.1px;text-transform:uppercase;color:#ff4b4b;text-shadow:0 0 8px rgba(255,20,20,.48),0 0 16px rgba(255,20,20,.22),1px 1px 0 #220000,-1px -1px 0 #220000;animation:titleSlam .9s cubic-bezier(.17,.89,.32,1.2),titleFlicker 2.5s ease-in-out infinite 1s;max-width:min(78vw,560px);word-break:normal;text-wrap:balance;hyphens:none}
 .introSplashSub{margin:8px 0 10px;font-size:clamp(11px,1.7vw,16px);font-weight:900;letter-spacing:2.2px;text-transform:uppercase;color:#9cff4e;text-shadow:0 0 10px rgba(156,255,78,.45)}
 .introImageWrap{position:absolute;inset:0;display:block;overflow:hidden}
 .introArt{width:100%!important;height:100%!important;max-width:none!important;max-height:none!important;object-fit:cover!important;border-radius:0!important;border:0!important;box-shadow:none!important;animation:introArtPulse 7s ease-in-out infinite alternate}
@@ -189,7 +194,7 @@ button{font:inherit}
 .introTimestamp{position:absolute;top:46px;left:18px;font-family:"Courier New",monospace;color:#ff8fa3;font-size:12px;letter-spacing:1px;z-index:7;opacity:.78}
 .introCounter{position:absolute;top:46px;right:18px;font-family:"Courier New",monospace;color:#ff8fa3;font-size:12px;letter-spacing:1px;z-index:7;opacity:.78}
 #introSkip{position:absolute;bottom:50px;right:18px;z-index:9;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.22);color:#fff;padding:8px 16px;border-radius:999px;font-weight:800;cursor:pointer;font-size:13px;letter-spacing:.5px;backdrop-filter:blur(4px)}
-#introSkip:hover{background:rgba(255,255,255,.14)}
+#introSkip:hover{background:rgba(255,255,255,.14)}#introOverlay.portrait-active #introSkip,#introOverlay.portrait-active .introProgress{display:none!important}
 #introSkip:active{transform:scale(.96)}
 .introProgress{position:absolute;bottom:50px;left:50%;transform:translateX(-50%);z-index:9;display:flex;gap:7px}
 .introDot{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.18);transition:background .3s ease,transform .3s ease}
@@ -214,7 +219,7 @@ button{font:inherit}
   .introBadge{font-size:10px;padding:5px 11px;margin-bottom:10px;letter-spacing:2px}
   .introTitle{font-size:clamp(22px,6.5vw,32px);margin-bottom:12px;line-height:1.18}
   .introText{font-size:15px;line-height:1.5;max-width:100%;padding:0 4px;margin-bottom:14px}
-  .introHero{font-size:18px;margin-bottom:4px}.introText.splashText{font-size:13px;line-height:1.42}.introSplashTitle{font-size:clamp(22px,7vw,34px);line-height:1.04;max-width:84vw}.introWarningRibbon{padding:6px 12px;font-size:11px}.introSplashSub{font-size:11px;letter-spacing:1.6px}.introSplashOverlay{inset:calc(env(safe-area-inset-top,0px) + 20px) 12px calc(env(safe-area-inset-bottom,0px) + 18px)}.introSplashBottom{padding:12px 12px 16px;border-radius:18px}
+  .introHero{font-size:18px;margin-bottom:4px}.introText.splashText{font-size:13px;line-height:1.42}.introSplashTitle{font-size:clamp(18px,5.8vw,26px);line-height:1.02;max-width:76vw}.introWarningRibbon{padding:6px 12px;font-size:11px}.introSplashSub{font-size:11px;letter-spacing:1.6px}.introSplashOverlay{inset:calc(env(safe-area-inset-top,0px) + 20px) 12px calc(env(safe-area-inset-bottom,0px) + 18px)}.introSplashBottom{padding:12px 12px 16px;border-radius:18px}
   .startMission{padding:13px 28px;font-size:15px;letter-spacing:1.5px;margin-top:10px}
   #introSkip{bottom:calc(env(safe-area-inset-bottom,0) + 38px);right:14px;font-size:12px;padding:7px 13px;min-height:36px}
   .introProgress{bottom:calc(env(safe-area-inset-bottom,0) + 44px);gap:6px}
@@ -228,7 +233,7 @@ button{font:inherit}
   .introBadge{font-size:9px;padding:3px 8px;margin-bottom:6px}
   .introTitle{font-size:18px;margin-bottom:6px;line-height:1.15}
   .introText{font-size:12px;line-height:1.4;margin-bottom:8px}
-  .introHero{font-size:14px}.introText.splashText{font-size:11px;line-height:1.3}.introSplashTitle{font-size:20px;line-height:1.05;max-width:82vw}.introWarningRibbon{padding:5px 10px;font-size:10px}.introSplashSub{font-size:10px;letter-spacing:1.2px}.introSplashOverlay{inset:calc(env(safe-area-inset-top,0px) + 18px) 10px calc(env(safe-area-inset-bottom,0px) + 14px)}.introSplashBottom{padding:10px 10px 14px;border-radius:16px}
+  .introHero{font-size:14px}.introText.splashText{font-size:11px;line-height:1.3}.introSplashTitle{font-size:17px;line-height:1.02;max-width:74vw}.introWarningRibbon{padding:5px 10px;font-size:10px}.introSplashSub{font-size:10px;letter-spacing:1.2px}.introSplashOverlay{inset:calc(env(safe-area-inset-top,0px) + 18px) 10px calc(env(safe-area-inset-bottom,0px) + 14px)}.introSplashBottom{padding:10px 10px 14px;border-radius:16px}
   .startMission{padding:9px 20px;font-size:13px;margin-top:6px}
   #introSkip{bottom:8px}
   .introProgress{bottom:12px}
@@ -322,22 +327,9 @@ html,body{min-height:var(--app-height);overscroll-behavior:none}
 <div class="scanlines"></div>
 <div class="introTimestamp" id="introTime">22:47:03 UTC</div>
 <div class="introCounter" id="introCounter">FRAME 01 / 05</div>
-<div class="introFrame splashFrame" id="frame1">
+<div class="introFrame splashFrame portraitSplash" id="frame1">
 <div class="introImageWrap">
-<img class="introArt" src="./intro/virus_invasion_intro.png" alt="Virus-Invasion">
-<div class="splashShade"></div>
-<div class="introHazardStamp">☣</div>
-</div>
-<div class="introSplashOverlay">
-<div class="introSplashTop">
-<div class="introBadge">☣ Virus entdeckt</div>
-<div class="introWarningRibbon">⚠ Kontamination erkannt</div>
-</div>
-<div class="introSplashBottom">
-<div class="introSplashTitle">Virus-<br>Invasion</div>
-<div class="introSplashSub">Sektor 7 · Alarmstufe Rot</div>
-<p class="introText splashText">Eine bösartige Mutation ist ausgebrochen. Sie wächst, jagt und drängt aus den Labortrakten nach draußen. Stoppe den Ausbruch, bevor aus dem Labor eine echte <strong>Virus-Invasion</strong> wird.</p>
-</div>
+<img class="introArt portraitIntroArt" src="./intro/virus_invasion_portrait_intro.png" alt="Virus-Invasion">
 </div>
 </div>
 <div class="introFrame" id="frame2">
@@ -521,9 +513,9 @@ function updateIntroDots(){var dots=introProgress.querySelectorAll(".introDot");
 function updateIntroCounter(){var n=String(introIndex+1).padStart(2,"0"),t=String(introFrames.length).padStart(2,"0");introCounter.textContent="FRAME "+n+" / "+t}
 function updateIntroTime(){var d=new Date(),hh=String(d.getUTCHours()).padStart(2,"0"),mm=String(d.getUTCMinutes()).padStart(2,"0"),ss=String(d.getUTCSeconds()).padStart(2,"0");introTime.textContent=hh+":"+mm+":"+ss+" UTC"}
 function introBeep(freq,dur){if(!effectsEnabled)return;try{ensureAudio();if(!audioCtx)return;var o=audioCtx.createOscillator(),g=audioCtx.createGain();o.type="sine";o.frequency.value=freq;g.gain.value=.04;o.connect(g);g.connect(audioCtx.destination);o.start();g.gain.exponentialRampToValueAtTime(.001,audioCtx.currentTime+dur);o.stop(audioCtx.currentTime+dur)}catch(e){}}function playIntroStinger(){if(!effectsEnabled)return;try{playNoise(.34,.16,{type:"bandpass",freq:880,q:8});playTone(110,.42,"sawtooth",.14,{toFreq:58,filter:{type:"lowpass",freq:260,q:5}});playTone(420,.12,"triangle",.06,{delay:.06,toFreq:300});playTone(760,.09,"sine",.05,{delay:.22,toFreq:520});setTimeout(function(){if(effectsEnabled)introBeep(280,.06)},420);setTimeout(function(){if(effectsEnabled)introBeep(220,.06)},620)}catch(e){}}
-function showIntroFrame(idx){if(idx>=introFrames.length){endIntro();return}introFrames.forEach(function(f){f.classList.remove("active","out")});var frame=introFrames[idx];frame.classList.add("active");introIndex=idx;updateIntroDots();updateIntroCounter();introBeep(idx===introFrames.length-1?660:380,.08);if(idx===0)playIntroStinger();if(introAdvanceTimer)clearTimeout(introAdvanceTimer);if(idx<introFrames.length-1){introAdvanceTimer=setTimeout(function(){var cur=introFrames[idx];cur.classList.add("out");setTimeout(function(){showIntroFrame(idx+1)},420)},introDurations[idx])}}
+function showIntroFrame(idx){if(idx>=introFrames.length){endIntro();return}introFrames.forEach(function(f){f.classList.remove("active","out")});introOverlay.classList.toggle("portrait-active",idx===0);var frame=introFrames[idx];frame.classList.add("active");introIndex=idx;updateIntroDots();updateIntroCounter();introBeep(idx===introFrames.length-1?660:380,.08);if(idx===0)playIntroStinger();if(introAdvanceTimer)clearTimeout(introAdvanceTimer);if(idx<introFrames.length-1){introAdvanceTimer=setTimeout(function(){var cur=introFrames[idx];cur.classList.add("out");setTimeout(function(){showIntroFrame(idx+1)},420)},introDurations[idx])}}
 function startIntro(){unlockAudioFromGesture();introActive=true;introIndex=0;buildIntroDots();updateIntroTime();if(introTimer)clearInterval(introTimer);introTimer=setInterval(updateIntroTime,1000);overlay.className="hidden";introOverlay.classList.add("show");ensureAudio();showIntroFrame(0)}
-function endIntro(){unlockAudioFromGesture();introActive=false;if(introAdvanceTimer){clearTimeout(introAdvanceTimer);introAdvanceTimer=null}if(introTimer){clearInterval(introTimer);introTimer=null}introOverlay.classList.remove("show");introFrames.forEach(function(f){f.classList.remove("active","out")});localStorage.setItem("laborVirusIntroSeen","1");introSeen=true;startGame()}
+function endIntro(){unlockAudioFromGesture();introActive=false;if(introAdvanceTimer){clearTimeout(introAdvanceTimer);introAdvanceTimer=null}if(introTimer){clearInterval(introTimer);introTimer=null}introOverlay.classList.remove("show","portrait-active");introFrames.forEach(function(f){f.classList.remove("active","out")});localStorage.setItem("laborVirusIntroSeen","1");introSeen=true;startGame()}
 function skipIntro(){if(!introActive)return;introBeep(220,.06);endIntro()}
 introSkip.addEventListener("click",function(e){e.stopPropagation();unlockAudioFromGesture();skipIntro()},false);introSkip.addEventListener("touchstart",function(e){e.preventDefault();e.stopPropagation();unlockAudioFromGesture();skipIntro()},{passive:false});
 missionStartBtn.addEventListener("click",function(e){e.stopPropagation();unlockAudioFromGesture();endIntro()},false);missionStartBtn.addEventListener("touchstart",function(e){e.preventDefault();e.stopPropagation();unlockAudioFromGesture();endIntro()},{passive:false});
