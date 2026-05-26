@@ -309,6 +309,49 @@ html,body{min-height:var(--app-height);overscroll-behavior:none}
   .introProgress{bottom:10px!important}
 }
 
+
+/* ===== Responsive desktop/tablet refinement v26 ===== */
+@media (min-width: 900px){
+  #game{background-position:center center!important;background-size:cover!important}
+  #startOverlay{padding:28px;place-items:center}
+  .card{width:min(92vw,780px);max-height:min(88vh,980px);overflow:auto;padding:30px 32px;border-radius:28px}
+  .card h1{font-size:clamp(34px,4vw,52px)}
+  .card p{font-size:16px;line-height:1.5}
+  .settings-box,.scoreboard-box{width:100%}
+  .difficulty-row,.option-row{justify-content:center;flex-wrap:wrap}
+  .rank-result{grid-template-columns:minmax(220px,280px) 1fr;gap:22px;align-items:center}
+  .rank-result img{width:min(28vw,260px);height:min(28vw,260px)}
+  .rank-name{font-size:clamp(28px,3vw,38px)}
+  .rank-flavor{font-size:15px}
+  .summary-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .introFrame{inset:74px 64px 92px;max-width:min(1200px,calc(100vw - 128px));margin:auto;padding:22px 28px}
+  .introTitle{font-size:clamp(34px,4vw,56px)}
+  .introText{max-width:920px;font-size:18px;line-height:1.58}
+  .portraitSplash .portraitIntroArt{object-fit:contain!important;object-position:center center!important;background:#000!important}
+  .portraitSplash .introImageWrap{background:#000!important}
+}
+@media (min-width: 900px) and (max-height: 820px){
+  .card{max-height:min(86vh,900px)}
+  .rank-result img{width:220px;height:220px}
+  .introFrame{inset:64px 54px 78px}
+  .introText{font-size:16px}
+}
+@media (min-width: 700px) and (max-width: 899px){
+  .card{width:min(94vw,700px);max-height:min(90vh,940px);overflow:auto}
+  .summary-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .rank-result{grid-template-columns:200px 1fr}
+  .rank-result img{width:200px;height:200px}
+  .portraitSplash .portraitIntroArt{object-fit:contain!important;background:#000!important}
+}
+@media (min-aspect-ratio: 4/3){
+  #introOverlay.portrait-active .portraitSplash .portraitIntroArt{object-fit:contain!important;background:#000!important}
+}
+@media (max-width: 420px){
+  .summary-grid{grid-template-columns:1fr 1fr}
+  .summary-pill strong{font-size:16px}
+  .scoreboard-list li{font-size:13px}
+}
+
 </style>
 </head>
 <body>
