@@ -327,7 +327,7 @@ html,body{min-height:var(--app-height);overscroll-behavior:none}
   .introFrame{inset:74px 64px 92px;max-width:min(1200px,calc(100vw - 128px));margin:auto;padding:22px 28px}
   .introTitle{font-size:clamp(34px,4vw,56px)}
   .introText{max-width:920px;font-size:18px;line-height:1.58}
-  .portraitSplash .portraitIntroArt{object-position:center center!important;background:#000!important}
+  .portraitSplash .portraitIntroArt{object-fit:contain!important;object-position:center center!important;background:#000!important}
   .portraitSplash .introImageWrap{background:#000!important}
 }
 @media (min-width: 900px) and (max-height: 820px){
@@ -341,10 +341,10 @@ html,body{min-height:var(--app-height);overscroll-behavior:none}
   .summary-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
   .rank-result{grid-template-columns:200px 1fr}
   .rank-result img{width:200px;height:200px}
-  .portraitSplash .portraitIntroArt{background:#000!important}
+  .portraitSplash .portraitIntroArt{object-fit:contain!important;background:#000!important}
 }
 @media (min-aspect-ratio: 4/3){
-  #introOverlay.portrait-active .portraitSplash .portraitIntroArt{background:#000!important}
+  #introOverlay.portrait-active .portraitSplash .portraitIntroArt{object-fit:contain!important;background:#000!important}
 }
 @media (max-width: 420px){
   .summary-grid{grid-template-columns:1fr 1fr}
@@ -365,42 +365,28 @@ html,body{min-height:var(--app-height);overscroll-behavior:none}
 #introOverlay.portrait-active .portraitIntroArt{
   width:100%!important;
   height:100%!important;
+  object-fit:contain!important;
   object-position:center center!important;
   background:#000!important;
   transform-origin:center center!important;
 }
 
-/* Mobile: vollständiges Bild sichtbar */
+/* auf Handys keinen zusätzlichen Zoom, damit das Bild wirklich passt */
 @media(max-width:700px){
   #introOverlay.portrait-active .portraitIntroArt{
-    object-fit:contain!important;
     animation:none!important;
     transform:none!important;
   }
 }
 
-/* Desktop/Tablet: Intro groß und bildschirmfüllender */
+/* auf Desktop darf ein sehr dezenter Zoom bleiben, aber ohne Beschnitt */
 @media(min-width:701px){
   #introOverlay.portrait-active .portraitIntroArt{
-    object-fit:cover!important;
     animation:portraitIntroZoomSoft 8s ease-in-out infinite alternate!important;
   }
   @keyframes portraitIntroZoomSoft{
-    from{transform:scale(1.00)}
-    to{transform:scale(1.06)}
-  }
-}
-
-/* Breite Desktop-Displays: noch etwas kräftiger füllen */
-@media(min-width:1100px){
-  #introOverlay.portrait-active .portraitIntroArt{
-    object-fit:cover!important;
-    object-position:center center!important;
-    animation:portraitIntroZoomDesktop 9s ease-in-out infinite alternate!important;
-  }
-  @keyframes portraitIntroZoomDesktop{
-    from{transform:scale(1.04)}
-    to{transform:scale(1.12)}
+    from{transform:scale(0.98)}
+    to{transform:scale(1.0)}
   }
 }
 
@@ -561,6 +547,320 @@ html,body{min-height:var(--app-height);overscroll-behavior:none}
   }
 }
 
+
+/* ===== v29 robust intro split: mobile vs desktop ===== */
+#introOverlay.intro-mobile.portrait-active .portraitSplash,
+#introOverlay.intro-desktop.portrait-active .portraitSplash,
+#introOverlay.intro-mobile.portrait-active .introImageWrap,
+#introOverlay.intro-desktop.portrait-active .introImageWrap{
+  background:#000!important;
+  overflow:hidden!important;
+}
+
+#introOverlay.intro-mobile.portrait-active .portraitIntroArt,
+#introOverlay.intro-desktop.portrait-active .portraitIntroArt{
+  width:100%!important;
+  height:100%!important;
+  background:#000!important;
+  transform-origin:center center!important;
+}
+
+#introOverlay.intro-mobile.portrait-active .portraitIntroArt{
+  object-fit:contain!important;
+  object-position:center center!important;
+  animation:none!important;
+  transform:none!important;
+}
+
+#introOverlay.intro-desktop.portrait-active .portraitIntroArt{
+  object-fit:cover!important;
+  object-position:center 34%!important;
+  animation:introDesktopFill 8.5s ease-in-out infinite alternate!important;
+}
+
+@keyframes introDesktopFill{
+  from{transform:scale(1.02)}
+  to{transform:scale(1.10)}
+}
+
+@media(min-width:1200px){
+  #introOverlay.intro-desktop.portrait-active .portraitIntroArt{
+    object-position:center 32%!important;
+    animation:introDesktopFillWide 9s ease-in-out infinite alternate!important;
+  }
+  @keyframes introDesktopFillWide{
+    from{transform:scale(1.06)}
+    to{transform:scale(1.16)}
+  }
+}
+
+
+/* ===== v30 separate intro images for mobile and desktop ===== */
+#introOverlay .dualIntroWrap{
+  position:absolute;
+  inset:0;
+  overflow:hidden;
+  background:#000;
+}
+
+#introOverlay .introArtMobile,
+#introOverlay .introArtDesktop{
+  position:absolute;
+  inset:0;
+  width:100%!important;
+  height:100%!important;
+  background:#000!important;
+}
+
+/* default hidden, then mode-specific shown */
+#introOverlay .introArtMobile,
+#introOverlay .introArtDesktop{
+  display:none!important;
+}
+
+#introOverlay.intro-mobile.portrait-active .introArtMobile{
+  display:block!important;
+  object-fit:contain!important;
+  object-position:center center!important;
+  animation:none!important;
+  transform:none!important;
+}
+
+#introOverlay.intro-mobile.portrait-active .introArtDesktop{
+  display:none!important;
+}
+
+#introOverlay.intro-desktop.portrait-active .introArtDesktop{
+  display:block!important;
+  object-fit:cover!important;
+  object-position:center center!important;
+  animation:introDesktopImageZoom 9s ease-in-out infinite alternate!important;
+}
+
+#introOverlay.intro-desktop.portrait-active .introArtMobile{
+  display:none!important;
+}
+
+@keyframes introDesktopImageZoom{
+  from{transform:scale(1.00)}
+  to{transform:scale(1.06)}
+}
+
+@media(min-width:1200px){
+  #introOverlay.intro-desktop.portrait-active .introArtDesktop{
+    animation:introDesktopImageZoomWide 10s ease-in-out infinite alternate!important;
+  }
+  @keyframes introDesktopImageZoomWide{
+    from{transform:scale(1.04)}
+    to{transform:scale(1.12)}
+  }
+}
+
+
+/* ===== v31 mobile-only refinement: Desktop bleibt unverändert ===== */
+@media(max-width:700px){
+  /* Mobile Intro: eigenes Portraitbild füllt den Screen besser */
+  #introOverlay.intro-mobile.portrait-active .introArtMobile{
+    display:block!important;
+    width:100%!important;
+    height:100%!important;
+    object-fit:cover!important;
+    object-position:center center!important;
+    background:#000!important;
+    animation:none!important;
+    transform:none!important;
+  }
+
+  #introOverlay.intro-mobile.portrait-active .introArtDesktop{
+    display:none!important;
+  }
+
+  /* Das Bild selbst enthält bereits Skip/Story-Optik, daher keine doppelte UI im ersten Intro */
+  #introOverlay.portrait-active #introSkip,
+  #introOverlay.portrait-active .introProgress,
+  #introOverlay.portrait-active .introTimestamp,
+  #introOverlay.portrait-active .introCounter{
+    display:none!important;
+  }
+
+  /* Story-Frames nach dem Bild: lesbarer und nicht zu groß */
+  #introOverlay:not(.portrait-active) .introFrame{
+    inset:calc(env(safe-area-inset-top,0px) + 42px) 12px calc(env(safe-area-inset-bottom,0px) + 68px)!important;
+    padding:12px!important;
+    overflow-y:auto!important;
+    justify-content:center!important;
+  }
+
+  #introOverlay:not(.portrait-active) .introTitle{
+    font-size:clamp(22px,6.2vw,31px)!important;
+    line-height:1.14!important;
+    margin-bottom:10px!important;
+  }
+
+  #introOverlay:not(.portrait-active) .introText{
+    font-size:14px!important;
+    line-height:1.42!important;
+    margin-bottom:12px!important;
+  }
+
+  #introOverlay:not(.portrait-active) .introIcon{
+    font-size:54px!important;
+    margin-bottom:8px!important;
+  }
+
+  #introOverlay:not(.portrait-active) #introSkip{
+    display:block!important;
+    bottom:calc(env(safe-area-inset-bottom,0px) + 30px)!important;
+    right:14px!important;
+  }
+
+  #introOverlay:not(.portrait-active) .introProgress{
+    display:flex!important;
+    bottom:calc(env(safe-area-inset-bottom,0px) + 38px)!important;
+  }
+
+  #introOverlay:not(.portrait-active) .introTimestamp,
+  #introOverlay:not(.portrait-active) .introCounter{
+    display:block!important;
+    top:calc(env(safe-area-inset-top,0px) + 34px)!important;
+  }
+
+  /* Start- und Auswertungsseite: echtes Seiten-Scrollen auf iPhone/Android */
+  #startOverlay{
+    display:block!important;
+    overflow-y:auto!important;
+    overflow-x:hidden!important;
+    -webkit-overflow-scrolling:touch!important;
+    touch-action:pan-y!important;
+    padding:calc(env(safe-area-inset-top,0px) + 10px) 10px calc(env(safe-area-inset-bottom,0px) + 28px)!important;
+  }
+
+  #startOverlay .card{
+    width:min(96vw,620px)!important;
+    max-height:none!important;
+    overflow:visible!important;
+    margin:0 auto!important;
+    padding:14px 14px 18px!important;
+    border-radius:20px!important;
+  }
+
+  #startOverlay .card h1{
+    font-size:clamp(22px,6vw,31px)!important;
+    line-height:1.08!important;
+    margin-bottom:6px!important;
+  }
+
+  #startOverlay .card p{
+    font-size:12.5px!important;
+    line-height:1.32!important;
+    margin:5px 0!important;
+  }
+
+  .settings-box{
+    padding:8px!important;
+    margin-top:8px!important;
+  }
+
+  .difficulty-row{
+    gap:5px!important;
+  }
+
+  .difficulty-btn{
+    padding:8px 8px!important;
+    font-size:12px!important;
+  }
+
+  .option-row{
+    gap:8px!important;
+    flex-wrap:wrap!important;
+    font-size:12.5px!important;
+  }
+
+  /* Mobile Auswertung kompakt und vollständig erreichbar */
+  .rank-result.show{
+    display:grid!important;
+    grid-template-columns:1fr!important;
+    gap:8px!important;
+    padding:10px!important;
+    margin-top:10px!important;
+  }
+
+  .rank-copy{
+    text-align:center!important;
+  }
+
+  .rank-result img{
+    width:min(54vw,160px)!important;
+    height:min(54vw,160px)!important;
+    border-radius:18px!important;
+  }
+
+  .rank-name{
+    font-size:clamp(20px,5.8vw,25px)!important;
+  }
+
+  .rank-flavor{
+    font-size:12px!important;
+    line-height:1.28!important;
+  }
+
+  .summary-grid{
+    grid-template-columns:1fr 1fr!important;
+    gap:6px!important;
+    margin-top:8px!important;
+  }
+
+  .summary-pill{
+    padding:7px 8px!important;
+    font-size:11.5px!important;
+  }
+
+  .summary-pill strong{
+    font-size:15px!important;
+  }
+
+  .scoreboard-box{
+    padding:8px 10px!important;
+    margin-top:8px!important;
+  }
+
+  .scoreboard-list li{
+    font-size:12px!important;
+    margin:4px 0!important;
+  }
+
+  #startBtn{
+    margin-top:10px!important;
+    min-height:44px!important;
+    padding:10px 20px!important;
+    font-size:15px!important;
+  }
+}
+
+/* Sehr kleine oder sehr flache Handy-Ansichten */
+@media(max-width:380px), (max-height:520px){
+  .rank-result img{
+    width:min(46vw,135px)!important;
+    height:min(46vw,135px)!important;
+  }
+
+  #startOverlay .card{
+    padding:11px 12px 16px!important;
+  }
+
+  .summary-grid{
+    grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  }
+
+  .summary-pill{
+    font-size:11px!important;
+  }
+
+  .summary-pill strong{
+    font-size:14px!important;
+  }
+}
+
 </style>
 </head>
 <body>
@@ -580,8 +880,9 @@ html,body{min-height:var(--app-height);overscroll-behavior:none}
 <div class="introTimestamp" id="introTime">22:47:03 UTC</div>
 <div class="introCounter" id="introCounter">FRAME 01 / 05</div>
 <div class="introFrame splashFrame portraitSplash" id="frame1">
-<div class="introImageWrap">
-<img class="introArt portraitIntroArt" src="./intro/virus_invasion_portrait_intro.png" alt="Virus-Invasion">
+<div class="introImageWrap dualIntroWrap">
+<img class="introArt portraitIntroArt introArtMobile" src="./intro/virus_invasion_portrait_intro.png" alt="Virus-Invasion Mobile Intro">
+<img class="introArt desktopIntroArt introArtDesktop" src="./intro/virus_invasion_desktop_intro.png" alt="Virus-Invasion Desktop Intro">
 </div>
 </div>
 <div class="introFrame" id="frame2">
@@ -612,7 +913,7 @@ html,body{min-height:var(--app-height);overscroll-behavior:none}
 <div class="introProgress" id="introProgress"></div>
 <button id="introSkip" type="button">Überspringen ›</button>
 </div>
-<section id="startOverlay"><div class="card"><h1 id="overlayTitle">Virus-Jagd: Outbreak</h1><p id="overlayText1">Eine außer Kontrolle geratene Probe hat das Labor geflutet. Zerstöre die mutierten Viren, sichere den Sektor und sammle Rangpunkte für die lokale Bestenliste.</p><p id="overlayText2">Rote, blaue und gelbe Viren verhalten sich unterschiedlich. Grüne Bonus-Viren bringen Extras. Halte deine Combo, sammle Power-ups wie Zeitbonus, Frenzy und Desinfektionsbombe – und bezwinge das Boss-Virus.</p><div class="settings-box"><div class="settings-title">Einstellungen</div><div class="difficulty-row"><button class="difficulty-btn active" data-difficulty="easy" type="button">Leicht</button><button class="difficulty-btn" data-difficulty="normal" type="button">Normal</button><button class="difficulty-btn" data-difficulty="hard" type="button">Schwer</button></div><div class="option-row"><label class="check-wrap"><input type="checkbox" id="musicToggle" checked> Gruselmusik</label><label class="check-wrap"><input type="checkbox" id="soundToggle" checked> Splat-Sounds</label></div><div class="option-row"><button class="difficulty-btn" id="audioTestBtn" type="button">🔊 Sound testen</button><span id="audioStatus" class="hint">Audio noch nicht gestartet</span></div></div><div class="highscore">🏆 Dein bester Wert: <span id="highscoreOverlay">0</span></div><div id="rankResult" class="rank-result"><img id="rankImage" src="" alt="Rangbild"><div class="rank-copy"><div class="rank-kicker">Dein Rang</div><div id="rankName" class="rank-name">Labor-Assistent</div><div id="rankFlavor" class="rank-flavor">Starte eine Runde, um deinen Rang freizuschalten.</div></div></div><div id="summaryGrid" class="summary-grid" style="display:none"><div class="summary-pill">Spielpunkte<strong id="sumScore">0</strong></div><div class="summary-pill">Rangpunkte<strong id="sumRankScore">0</strong></div><div class="summary-pill">Trefferquote<strong id="sumAccuracy">0%</strong></div><div class="summary-pill">Höchste Combo<strong id="sumCombo">0×</strong></div><div class="summary-pill">Getroffene Viren<strong id="sumHits">0</strong></div></div><div id="localScoresBox" class="scoreboard-box"><div class="settings-title">Lokale Bestenliste</div><ol id="localScoresList" class="scoreboard-list"></ol></div><div class="overlay-actions"><button id="startBtn" type="button" onclick="startGameFromButton(event)">Spiel starten</button><br><button id="storyAgainBtn" type="button">📖 Story noch einmal ansehen</button><br><button id="installBtn" type="button">📲 App installieren</button></div></div></section>
+<section id="startOverlay"><div class="card"><h1 id="overlayTitle">Virus-Jagd: Outbreak</h1><p id="overlayText1">Eine außer Kontrolle geratene Probe hat das Labor geflutet. Zerstöre die mutierten Viren, sichere den Sektor und sammle Rangpunkte für die lokale Bestenliste.</p><p id="overlayText2">Rote, blaue und gelbe Viren verhalten sich unterschiedlich. Grüne Bonus-Viren bringen Extras. Halte deine Combo, sammle Power-ups wie Zeitbonus, Frenzy und Desinfektionsbombe – und bezwinge das Boss-Virus.</p><div class="settings-box"><div class="settings-title">Einstellungen</div><div class="difficulty-row"><button class="difficulty-btn active" data-difficulty="easy" type="button">Leicht</button><button class="difficulty-btn" data-difficulty="normal" type="button">Normal</button><button class="difficulty-btn" data-difficulty="hard" type="button">Schwer</button></div><div class="option-row"><label class="check-wrap"><input type="checkbox" id="musicToggle" checked> Gruselmusik</label><label class="check-wrap"><input type="checkbox" id="soundToggle" checked> Splat-Sounds</label></div><div class="option-row"><button class="difficulty-btn" id="audioTestBtn" type="button">🔊 Sound testen</button><span id="audioStatus" class="hint">Audio noch nicht gestartet</span></div></div><div class="highscore">🏆 Dein bester Wert: <span id="highscoreOverlay">0</span></div><div id="rankResult" class="rank-result"><img id="rankImage" src="" alt="Rangbild"><div class="rank-copy"><div class="rank-kicker">Dein Rang</div><div id="rankName" class="rank-name">Labor-Assistent</div><div id="rankFlavor" class="rank-flavor">Starte eine Runde, um deinen Rang freizuschalten.</div></div></div><div id="summaryGrid" class="summary-grid" style="display:none"><div class="summary-pill">Spielpunkte<strong id="sumScore">0</strong></div><div class="summary-pill">Rangpunkte<strong id="sumRankScore">0</strong></div><div class="summary-pill">Trefferquote<strong id="sumAccuracy">0%</strong></div><div class="summary-pill">Höchste Combo<strong id="sumCombo">0×</strong></div><div class="summary-pill">Getroffene Viren<strong id="sumHits">0</strong></div></div><div id="localScoresBox" class="scoreboard-box"><div class="settings-title">Lokale Bestenliste</div><ol id="localScoresList" class="scoreboard-list"></ol></div><div class="overlay-actions"><button id="startBtn" type="button" onclick="startGameFromButton(event)">Intro + Spiel starten</button><br><button id="storyAgainBtn" type="button">📖 Story noch einmal ansehen</button><br><button id="installBtn" type="button">📲 App installieren</button></div></div></section>
 <div id="updateToast"><span>🔄 Neue Version verfügbar</span><button id="updateBtn" type="button">Aktualisieren</button></div>
 <script>
 var game=document.getElementById("game"),overlay=document.getElementById("startOverlay"),startBtn=document.getElementById("startBtn"),overlayTitle=document.getElementById("overlayTitle"),overlayText1=document.getElementById("overlayText1"),overlayText2=document.getElementById("overlayText2"),scoreEl=document.getElementById("score"),timeEl=document.getElementById("time"),hitsEl=document.getElementById("hits"),highscoreHudEl=document.getElementById("highscoreHud"),highscoreOverlayEl=document.getElementById("highscoreOverlay"),soundBadge=document.getElementById("soundBadge"),crosshair=document.getElementById("crosshair"),particleLayer=document.getElementById("particleLayer"),bossAlert=document.getElementById("bossAlert"),musicToggle=document.getElementById("musicToggle"),soundToggle=document.getElementById("soundToggle"),audioTestBtn=document.getElementById("audioTestBtn"),audioStatus=document.getElementById("audioStatus"),difficultyButtons=document.querySelectorAll(".difficulty-btn"),timeBar=document.getElementById("timeBar"),timeBarFill=document.getElementById("timeBarFill"),comboDisplay=document.getElementById("comboDisplay"),powerupStatus=document.getElementById("powerupStatus"),pauseBtn=document.getElementById("pauseBtn"),pauseOverlay=document.getElementById("pauseOverlay"),resumeBtn=document.getElementById("resumeBtn"),quitBtn=document.getElementById("quitBtn"),introOverlay=document.getElementById("introOverlay"),introSkip=document.getElementById("introSkip"),introProgress=document.getElementById("introProgress"),introCounter=document.getElementById("introCounter"),introTime=document.getElementById("introTime"),missionStartBtn=document.getElementById("missionStartBtn"),storyAgainBtn=document.getElementById("storyAgainBtn"),introFrames=document.querySelectorAll(".introFrame"),rankResult=document.getElementById("rankResult"),rankImage=document.getElementById("rankImage"),rankNameEl=document.getElementById("rankName"),rankFlavorEl=document.getElementById("rankFlavor"),summaryGrid=document.getElementById("summaryGrid"),sumScore=document.getElementById("sumScore"),sumRankScore=document.getElementById("sumRankScore"),sumAccuracy=document.getElementById("sumAccuracy"),sumHits=document.getElementById("sumHits"),sumCombo=document.getElementById("sumCombo"),localScoresList=document.getElementById("localScoresList");
@@ -628,7 +929,7 @@ function updateViewportVars(){
   if(h>0)document.documentElement.style.setProperty("--vvh",h+"px");
 }
 updateViewportVars();
-window.addEventListener("resize",updateViewportVars,{passive:true});
+window.addEventListener("resize",updateViewportVars,{passive:true});window.addEventListener("resize",function(){if(introActive)applyIntroViewportMode()},{passive:true});
 window.addEventListener("orientationchange",function(){setTimeout(updateViewportVars,80);setTimeout(updateViewportVars,360)},{passive:true});
 if(window.visualViewport){visualViewport.addEventListener("resize",updateViewportVars,{passive:true});visualViewport.addEventListener("scroll",updateViewportVars,{passive:true})}
 function viewW(){return Math.round((window.visualViewport&&window.visualViewport.width)||window.innerWidth||document.documentElement.clientWidth||0)}
@@ -730,7 +1031,7 @@ function resumeGame(){if(!paused)return;paused=false;pauseOverlay.classList.remo
 function quitToMenu(){paused=false;running=false;clearTimers();stopMusic();document.querySelectorAll(".virus,.powerup").forEach(function(el){el.remove()});pauseOverlay.classList.remove("show");pauseBtn.classList.remove("show");timeBar.classList.remove("show");comboDisplay.classList.remove("show");game.classList.remove("playing","frenzy");frenzyActive=false;refreshPowerupStatus();resetOverlayTexts();overlay.className=""}
 function resetOverlayTexts(){overlayTitle.textContent="Virus-Jagd: Outbreak";overlayText1.textContent="Eine außer Kontrolle geratene Probe hat das Labor geflutet. Zerstöre die mutierten Viren, sichere den Sektor und sammle Rangpunkte für die lokale Bestenliste.";overlayText2.innerHTML="Rote, blaue und gelbe Viren verhalten sich unterschiedlich. Grüne Bonus-Viren bringen Extras. Halte deine Combo, sammle Power-ups wie Zeitbonus, Frenzy und Desinfektionsbombe – und bezwinge das Boss-Virus.";startBtn.textContent="Spiel starten";hideRankResult();renderTopScores()}
 function flashBossAlert(){bossAlert.classList.add("show");setTimeout(function(){bossAlert.classList.remove("show")},2000)}
-function startGameFromButton(event){if(event){event.preventDefault();event.stopPropagation()}if(startLock)return false;startLock=true;setTimeout(function(){startLock=false},300);effectsEnabled=!!soundToggle.checked;musicEnabled=!!musicToggle.checked;updateSoundBadge();var p=unlockAudioFromGesture();var go=function(){if(!introSeen){startIntro()}else{startGame()}};if(p&&p.then)p.then(go);else go();return false}window.startGameFromButton=startGameFromButton;
+function startGameFromButton(event){if(event){event.preventDefault();event.stopPropagation()}if(startLock)return false;startLock=true;setTimeout(function(){startLock=false},300);effectsEnabled=!!soundToggle.checked;musicEnabled=!!musicToggle.checked;updateSoundBadge();var p=unlockAudioFromGesture();var go=function(){startIntro()};if(p&&p.then)p.then(go);else go();return false}window.startGameFromButton=startGameFromButton;
 function startGame(){clearTimers();document.querySelectorAll(".virus,.splat,.explosion-ring,.explosion-particle,.score-popup,.powerup").forEach(function(el){el.remove()});var diff=difficultyMap[selectedDifficulty];score=0;hits=0;misses=0;timeLeft=diff.duration;maxTime=diff.duration;spawnDelay=diff.spawn;running=true;paused=false;bossSpawnedThisRound=0;nextBossAt=12;combo=0;maxCombo=0;scoreMultiplier=1;frenzyActive=false;game.classList.remove("frenzy");refreshPowerupStatus();comboDisplay.classList.remove("show");timeBar.classList.add("show");updateTimeBar();pauseBtn.classList.add("show");pauseBtn.textContent="⏸";updateHud();overlay.className="hidden";game.classList.add("playing");resetOverlayTexts();hideRankResult();soundStart();startMusic();spawnTimer=setInterval(spawnEnemy,spawnDelay);clockTimer=setInterval(tick,1000);difficultyTimer=setInterval(increaseDifficulty,7000);schedulePowerup();for(var j=0;j<5;j++)setTimeout(spawnEnemy,j*220)}
 function stopGame(){running=false;paused=false;clearTimers();game.classList.remove("playing","frenzy");frenzyActive=false;stopMusic();document.querySelectorAll(".virus,.powerup").forEach(function(v){v.remove()});pauseBtn.classList.remove("show");pauseOverlay.classList.remove("show");timeBar.classList.remove("show");comboDisplay.classList.remove("show");refreshPowerupStatus();if(score>highscore){highscore=score;localStorage.setItem("laborVirusHighscoreCinematic",String(highscore))}updateHighscoreDisplay();var shots=hits+misses,accuracy=shots>0?Math.round(hits/shots*100):0,rankScore=calcRankScore(score,accuracy,maxCombo,hits);addLocalScore(score,rankScore,accuracy,maxCombo);overlayTitle.textContent="Sektor gesichert";overlayText1.innerHTML="<strong>Mission abgeschlossen.</strong> Du hast <strong>"+score+"</strong> Spielpunkte und <strong>"+rankScore+"</strong> Rangpunkte erreicht.";overlayText2.innerHTML="Rangpunkte = Spielpunkte + Trefferquote-Bonus + Combo-Bonus + Treffer-Bonus. Sartorius-Elite beginnt erst ab <strong>12.000 Rangpunkten</strong>.";showRankResult(score,rankScore,accuracy,hits,maxCombo);renderTopScores();startBtn.textContent="Noch einmal spielen";overlay.className="";}
 function tick(){timeLeft--;updateHud();if(timeLeft<=0)stopGame()}function increaseDifficulty(){if(spawnTimer)clearInterval(spawnTimer);spawnDelay=Math.max(selectedDifficulty==="hard"?280:340,spawnDelay-(selectedDifficulty==="hard"?110:90));spawnTimer=setInterval(spawnEnemy,spawnDelay)}
@@ -761,13 +1062,14 @@ document.addEventListener("keydown",function(e){if(introActive&&(e.key==="Escape
 /* ===== Cinematic Intro Logic ===== */
 var introIndex=0,introTimer=null,introAdvanceTimer=null,introActive=false,introDurations=[7200,6000,6000,6500,99999],introSeen=localStorage.getItem("laborVirusIntroSeen")==="1";
 function buildIntroDots(){introProgress.innerHTML="";for(var i=0;i<introFrames.length;i++){var d=document.createElement("div");d.className="introDot";introProgress.appendChild(d)}}
+function applyIntroViewportMode(){var mobile=window.matchMedia("(max-width: 700px)").matches;introOverlay.classList.toggle("intro-mobile",mobile);introOverlay.classList.toggle("intro-desktop",!mobile)}
 function updateIntroDots(){var dots=introProgress.querySelectorAll(".introDot");for(var i=0;i<dots.length;i++){dots[i].classList.remove("active","done");if(i<introIndex)dots[i].classList.add("done");else if(i===introIndex)dots[i].classList.add("active")}}
 function updateIntroCounter(){var n=String(introIndex+1).padStart(2,"0"),t=String(introFrames.length).padStart(2,"0");introCounter.textContent="FRAME "+n+" / "+t}
 function updateIntroTime(){var d=new Date(),hh=String(d.getUTCHours()).padStart(2,"0"),mm=String(d.getUTCMinutes()).padStart(2,"0"),ss=String(d.getUTCSeconds()).padStart(2,"0");introTime.textContent=hh+":"+mm+":"+ss+" UTC"}
 function introBeep(freq,dur){if(!effectsEnabled)return;try{ensureAudio();if(!audioCtx)return;var o=audioCtx.createOscillator(),g=audioCtx.createGain();o.type="sine";o.frequency.value=freq;g.gain.value=.04;o.connect(g);g.connect(audioCtx.destination);o.start();g.gain.exponentialRampToValueAtTime(.001,audioCtx.currentTime+dur);o.stop(audioCtx.currentTime+dur)}catch(e){}}function playIntroStinger(){if(!effectsEnabled)return;try{playNoise(.34,.16,{type:"bandpass",freq:880,q:8});playTone(110,.42,"sawtooth",.14,{toFreq:58,filter:{type:"lowpass",freq:260,q:5}});playTone(420,.12,"triangle",.06,{delay:.06,toFreq:300});playTone(760,.09,"sine",.05,{delay:.22,toFreq:520});setTimeout(function(){if(effectsEnabled)introBeep(280,.06)},420);setTimeout(function(){if(effectsEnabled)introBeep(220,.06)},620)}catch(e){}}
 function showIntroFrame(idx){if(idx>=introFrames.length){endIntro();return}introFrames.forEach(function(f){f.classList.remove("active","out")});introOverlay.classList.toggle("portrait-active",idx===0);var frame=introFrames[idx];frame.classList.add("active");introIndex=idx;updateIntroDots();updateIntroCounter();introBeep(idx===introFrames.length-1?660:380,.08);if(idx===0)playIntroStinger();if(introAdvanceTimer)clearTimeout(introAdvanceTimer);if(idx<introFrames.length-1){introAdvanceTimer=setTimeout(function(){var cur=introFrames[idx];cur.classList.add("out");setTimeout(function(){showIntroFrame(idx+1)},420)},introDurations[idx])}}
-function startIntro(){unlockAudioFromGesture();introActive=true;introIndex=0;buildIntroDots();updateIntroTime();if(introTimer)clearInterval(introTimer);introTimer=setInterval(updateIntroTime,1000);overlay.className="hidden";introOverlay.classList.add("show");ensureAudio();showIntroFrame(0)}
-function endIntro(){unlockAudioFromGesture();introActive=false;if(introAdvanceTimer){clearTimeout(introAdvanceTimer);introAdvanceTimer=null}if(introTimer){clearInterval(introTimer);introTimer=null}introOverlay.classList.remove("show","portrait-active");introFrames.forEach(function(f){f.classList.remove("active","out")});localStorage.setItem("laborVirusIntroSeen","1");introSeen=true;startGame()}
+function startIntro(){unlockAudioFromGesture();applyIntroViewportMode();introActive=true;introIndex=0;buildIntroDots();updateIntroTime();if(introTimer)clearInterval(introTimer);introTimer=setInterval(updateIntroTime,1000);overlay.className="hidden";introOverlay.classList.add("show");ensureAudio();showIntroFrame(0)}
+function endIntro(){unlockAudioFromGesture();introActive=false;if(introAdvanceTimer){clearTimeout(introAdvanceTimer);introAdvanceTimer=null}if(introTimer){clearInterval(introTimer);introTimer=null}introOverlay.classList.remove("show","portrait-active","intro-mobile","intro-desktop");introFrames.forEach(function(f){f.classList.remove("active","out")});localStorage.setItem("laborVirusIntroSeen","1");introSeen=true;startGame()}
 function skipIntro(){if(!introActive)return;introBeep(220,.06);endIntro()}
 introSkip.addEventListener("click",function(e){e.stopPropagation();unlockAudioFromGesture();skipIntro()},false);introSkip.addEventListener("touchstart",function(e){e.preventDefault();e.stopPropagation();unlockAudioFromGesture();skipIntro()},{passive:false});
 missionStartBtn.addEventListener("click",function(e){e.stopPropagation();unlockAudioFromGesture();endIntro()},false);missionStartBtn.addEventListener("touchstart",function(e){e.preventDefault();e.stopPropagation();unlockAudioFromGesture();endIntro()},{passive:false});

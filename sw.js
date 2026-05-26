@@ -3,7 +3,7 @@
 // Cache-Name muss bei jedem Inhalts-Update inkrementiert werden, damit alte Versionen
 // beim nächsten Start verworfen werden.
 
-const CACHE_VERSION = 'v28-desktop-mobile-intro-split';
+const CACHE_VERSION = 'v31-mobile-refinement';
 const CACHE_NAME = 'virus-jagd-' + CACHE_VERSION;
 
 // Alle Assets relativ zum SW-Scope. Das Spiel selbst ist eine einzige HTML-Datei,
@@ -19,6 +19,7 @@ const PRECACHE_URLS = [
   './favicon-64.png',
   './intro/virus_invasion_intro.png',
   './intro/virus_invasion_portrait_intro.png',
+  './intro/virus_invasion_desktop_intro.png',
   './ranks/rank_assistent.png',
   './ranks/rank_analyst.png',
   './ranks/rank_virologe.png',
