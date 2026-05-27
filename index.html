@@ -657,207 +657,17 @@ html,body{min-height:var(--app-height);overscroll-behavior:none}
 }
 
 
-/* ===== v31 mobile-only refinement: Desktop bleibt unverändert ===== */
+/* ===== v33: restore good desktop intro, robust mobile intro restart ===== */
 @media(max-width:700px){
-  /* Mobile Intro: eigenes Portraitbild füllt den Screen besser */
-  #introOverlay.intro-mobile.portrait-active .introArtMobile{
+  #introOverlay.intro-mobile.show.portrait-active{
     display:block!important;
-    width:100%!important;
-    height:100%!important;
-    object-fit:cover!important;
-    object-position:center center!important;
     background:#000!important;
-    animation:none!important;
-    transform:none!important;
   }
-
-  #introOverlay.intro-mobile.portrait-active .introArtDesktop{
-    display:none!important;
-  }
-
-  /* Das Bild selbst enthält bereits Skip/Story-Optik, daher keine doppelte UI im ersten Intro */
-  #introOverlay.portrait-active #introSkip,
-  #introOverlay.portrait-active .introProgress,
-  #introOverlay.portrait-active .introTimestamp,
-  #introOverlay.portrait-active .introCounter{
-    display:none!important;
-  }
-
-  /* Story-Frames nach dem Bild: lesbarer und nicht zu groß */
-  #introOverlay:not(.portrait-active) .introFrame{
-    inset:calc(env(safe-area-inset-top,0px) + 42px) 12px calc(env(safe-area-inset-bottom,0px) + 68px)!important;
-    padding:12px!important;
-    overflow-y:auto!important;
-    justify-content:center!important;
-  }
-
-  #introOverlay:not(.portrait-active) .introTitle{
-    font-size:clamp(22px,6.2vw,31px)!important;
-    line-height:1.14!important;
-    margin-bottom:10px!important;
-  }
-
-  #introOverlay:not(.portrait-active) .introText{
-    font-size:14px!important;
-    line-height:1.42!important;
-    margin-bottom:12px!important;
-  }
-
-  #introOverlay:not(.portrait-active) .introIcon{
-    font-size:54px!important;
-    margin-bottom:8px!important;
-  }
-
-  #introOverlay:not(.portrait-active) #introSkip{
-    display:block!important;
-    bottom:calc(env(safe-area-inset-bottom,0px) + 30px)!important;
-    right:14px!important;
-  }
-
-  #introOverlay:not(.portrait-active) .introProgress{
+  #introOverlay.intro-mobile.show.portrait-active #frame1{
     display:flex!important;
-    bottom:calc(env(safe-area-inset-bottom,0px) + 38px)!important;
   }
-
-  #introOverlay:not(.portrait-active) .introTimestamp,
-  #introOverlay:not(.portrait-active) .introCounter{
+  #introOverlay.intro-mobile.show.portrait-active .introArtMobile{
     display:block!important;
-    top:calc(env(safe-area-inset-top,0px) + 34px)!important;
-  }
-
-  /* Start- und Auswertungsseite: echtes Seiten-Scrollen auf iPhone/Android */
-  #startOverlay{
-    display:block!important;
-    overflow-y:auto!important;
-    overflow-x:hidden!important;
-    -webkit-overflow-scrolling:touch!important;
-    touch-action:pan-y!important;
-    padding:calc(env(safe-area-inset-top,0px) + 10px) 10px calc(env(safe-area-inset-bottom,0px) + 28px)!important;
-  }
-
-  #startOverlay .card{
-    width:min(96vw,620px)!important;
-    max-height:none!important;
-    overflow:visible!important;
-    margin:0 auto!important;
-    padding:14px 14px 18px!important;
-    border-radius:20px!important;
-  }
-
-  #startOverlay .card h1{
-    font-size:clamp(22px,6vw,31px)!important;
-    line-height:1.08!important;
-    margin-bottom:6px!important;
-  }
-
-  #startOverlay .card p{
-    font-size:12.5px!important;
-    line-height:1.32!important;
-    margin:5px 0!important;
-  }
-
-  .settings-box{
-    padding:8px!important;
-    margin-top:8px!important;
-  }
-
-  .difficulty-row{
-    gap:5px!important;
-  }
-
-  .difficulty-btn{
-    padding:8px 8px!important;
-    font-size:12px!important;
-  }
-
-  .option-row{
-    gap:8px!important;
-    flex-wrap:wrap!important;
-    font-size:12.5px!important;
-  }
-
-  /* Mobile Auswertung kompakt und vollständig erreichbar */
-  .rank-result.show{
-    display:grid!important;
-    grid-template-columns:1fr!important;
-    gap:8px!important;
-    padding:10px!important;
-    margin-top:10px!important;
-  }
-
-  .rank-copy{
-    text-align:center!important;
-  }
-
-  .rank-result img{
-    width:min(54vw,160px)!important;
-    height:min(54vw,160px)!important;
-    border-radius:18px!important;
-  }
-
-  .rank-name{
-    font-size:clamp(20px,5.8vw,25px)!important;
-  }
-
-  .rank-flavor{
-    font-size:12px!important;
-    line-height:1.28!important;
-  }
-
-  .summary-grid{
-    grid-template-columns:1fr 1fr!important;
-    gap:6px!important;
-    margin-top:8px!important;
-  }
-
-  .summary-pill{
-    padding:7px 8px!important;
-    font-size:11.5px!important;
-  }
-
-  .summary-pill strong{
-    font-size:15px!important;
-  }
-
-  .scoreboard-box{
-    padding:8px 10px!important;
-    margin-top:8px!important;
-  }
-
-  .scoreboard-list li{
-    font-size:12px!important;
-    margin:4px 0!important;
-  }
-
-  #startBtn{
-    margin-top:10px!important;
-    min-height:44px!important;
-    padding:10px 20px!important;
-    font-size:15px!important;
-  }
-}
-
-/* Sehr kleine oder sehr flache Handy-Ansichten */
-@media(max-width:380px), (max-height:520px){
-  .rank-result img{
-    width:min(46vw,135px)!important;
-    height:min(46vw,135px)!important;
-  }
-
-  #startOverlay .card{
-    padding:11px 12px 16px!important;
-  }
-
-  .summary-grid{
-    grid-template-columns:repeat(2,minmax(0,1fr))!important;
-  }
-
-  .summary-pill{
-    font-size:11px!important;
-  }
-
-  .summary-pill strong{
-    font-size:14px!important;
   }
 }
 
@@ -1068,7 +878,7 @@ function updateIntroCounter(){var n=String(introIndex+1).padStart(2,"0"),t=Strin
 function updateIntroTime(){var d=new Date(),hh=String(d.getUTCHours()).padStart(2,"0"),mm=String(d.getUTCMinutes()).padStart(2,"0"),ss=String(d.getUTCSeconds()).padStart(2,"0");introTime.textContent=hh+":"+mm+":"+ss+" UTC"}
 function introBeep(freq,dur){if(!effectsEnabled)return;try{ensureAudio();if(!audioCtx)return;var o=audioCtx.createOscillator(),g=audioCtx.createGain();o.type="sine";o.frequency.value=freq;g.gain.value=.04;o.connect(g);g.connect(audioCtx.destination);o.start();g.gain.exponentialRampToValueAtTime(.001,audioCtx.currentTime+dur);o.stop(audioCtx.currentTime+dur)}catch(e){}}function playIntroStinger(){if(!effectsEnabled)return;try{playNoise(.34,.16,{type:"bandpass",freq:880,q:8});playTone(110,.42,"sawtooth",.14,{toFreq:58,filter:{type:"lowpass",freq:260,q:5}});playTone(420,.12,"triangle",.06,{delay:.06,toFreq:300});playTone(760,.09,"sine",.05,{delay:.22,toFreq:520});setTimeout(function(){if(effectsEnabled)introBeep(280,.06)},420);setTimeout(function(){if(effectsEnabled)introBeep(220,.06)},620)}catch(e){}}
 function showIntroFrame(idx){if(idx>=introFrames.length){endIntro();return}introFrames.forEach(function(f){f.classList.remove("active","out")});introOverlay.classList.toggle("portrait-active",idx===0);var frame=introFrames[idx];frame.classList.add("active");introIndex=idx;updateIntroDots();updateIntroCounter();introBeep(idx===introFrames.length-1?660:380,.08);if(idx===0)playIntroStinger();if(introAdvanceTimer)clearTimeout(introAdvanceTimer);if(idx<introFrames.length-1){introAdvanceTimer=setTimeout(function(){var cur=introFrames[idx];cur.classList.add("out");setTimeout(function(){showIntroFrame(idx+1)},420)},introDurations[idx])}}
-function startIntro(){unlockAudioFromGesture();applyIntroViewportMode();introActive=true;introIndex=0;buildIntroDots();updateIntroTime();if(introTimer)clearInterval(introTimer);introTimer=setInterval(updateIntroTime,1000);overlay.className="hidden";introOverlay.classList.add("show");ensureAudio();showIntroFrame(0)}
+function startIntro(){unlockAudioFromGesture();if(introAdvanceTimer){clearTimeout(introAdvanceTimer);introAdvanceTimer=null}if(introTimer){clearInterval(introTimer);introTimer=null}introFrames.forEach(function(f){f.classList.remove("active","out")});introOverlay.classList.remove("portrait-active","intro-mobile","intro-desktop");applyIntroViewportMode();introActive=true;introIndex=0;buildIntroDots();updateIntroTime();introTimer=setInterval(updateIntroTime,1000);overlay.className="hidden";introOverlay.classList.add("show");ensureAudio();showIntroFrame(0)}
 function endIntro(){unlockAudioFromGesture();introActive=false;if(introAdvanceTimer){clearTimeout(introAdvanceTimer);introAdvanceTimer=null}if(introTimer){clearInterval(introTimer);introTimer=null}introOverlay.classList.remove("show","portrait-active","intro-mobile","intro-desktop");introFrames.forEach(function(f){f.classList.remove("active","out")});localStorage.setItem("laborVirusIntroSeen","1");introSeen=true;startGame()}
 function skipIntro(){if(!introActive)return;introBeep(220,.06);endIntro()}
 introSkip.addEventListener("click",function(e){e.stopPropagation();unlockAudioFromGesture();skipIntro()},false);introSkip.addEventListener("touchstart",function(e){e.preventDefault();e.stopPropagation();unlockAudioFromGesture();skipIntro()},{passive:false});
