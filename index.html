@@ -662,6 +662,63 @@ html,body{min-height:var(--app-height);overscroll-behavior:none}
 #introOverlay{z-index:10001!important}
 #startOverlay{z-index:10000!important}
 
+
+/* ===== v36 dynamic intro fit / hard overlay state ===== */
+body.intro-running #startOverlay{
+  display:none!important;
+  visibility:hidden!important;
+  opacity:0!important;
+  pointer-events:none!important;
+}
+
+body.intro-running #introOverlay{
+  display:block!important;
+  z-index:2147483647!important;
+  visibility:visible!important;
+  opacity:1!important;
+}
+
+body.intro-running #hud,
+body.intro-running #pauseBtn,
+body.intro-running #timeBar,
+body.intro-running #comboDisplay,
+body.intro-running #powerupStatus{
+  display:none!important;
+}
+
+#introOverlay .dualIntroWrap{
+  position:absolute!important;
+  inset:0!important;
+  width:100vw!important;
+  height:var(--app-height)!important;
+  background:#000!important;
+  overflow:hidden!important;
+}
+
+#introOverlay .introArtMobile,
+#introOverlay .introArtDesktop{
+  position:absolute!important;
+  inset:0!important;
+  width:100%!important;
+  height:100%!important;
+  max-width:none!important;
+  max-height:none!important;
+  background:#000!important;
+  object-position:center center!important;
+  transform:none!important;
+  animation:none!important;
+}
+
+#introOverlay.intro-mobile.portrait-active .introArtMobile,
+#introOverlay.intro-desktop.portrait-active .introArtDesktop{
+  display:block!important;
+}
+
+#introOverlay.intro-mobile.portrait-active .introArtDesktop,
+#introOverlay.intro-desktop.portrait-active .introArtMobile{
+  display:none!important;
+}
+
 </style>
 </head>
 <body>
@@ -730,8 +787,8 @@ function updateViewportVars(){
   if(h>0)document.documentElement.style.setProperty("--vvh",h+"px");
 }
 updateViewportVars();
-window.addEventListener("resize",updateViewportVars,{passive:true});window.addEventListener("resize",function(){if(introActive)applyIntroViewportMode()},{passive:true});
-window.addEventListener("orientationchange",function(){setTimeout(updateViewportVars,80);setTimeout(updateViewportVars,360)},{passive:true});
+window.addEventListener("resize",updateViewportVars,{passive:true});window.addEventListener("resize",function(){if(introActive){applyIntroViewportMode();fitIntroImages()}},{passive:true});window.addEventListener("resize",function(){if(introActive)applyIntroViewportMode()},{passive:true});
+window.addEventListener("orientationchange",function(){setTimeout(function(){updateViewportVars();if(introActive){applyIntroViewportMode();fitIntroImages()}},80);setTimeout(function(){updateViewportVars();if(introActive){applyIntroViewportMode();fitIntroImages()}},360)},{passive:true});
 if(window.visualViewport){visualViewport.addEventListener("resize",updateViewportVars,{passive:true});visualViewport.addEventListener("scroll",updateViewportVars,{passive:true})}
 function viewW(){return Math.round((window.visualViewport&&window.visualViewport.width)||window.innerWidth||document.documentElement.clientWidth||0)}
 function viewH(){return Math.round((window.visualViewport&&window.visualViewport.height)||window.innerHeight||document.documentElement.clientHeight||0)}
@@ -863,14 +920,15 @@ document.addEventListener("keydown",function(e){if(introActive&&(e.key==="Escape
 /* ===== Cinematic Intro Logic ===== */
 var introIndex=0,introTimer=null,introAdvanceTimer=null,introActive=false,introDurations=[7200,6000,6000,6500,99999],introSeen=localStorage.getItem("laborVirusIntroSeen")==="1";
 function buildIntroDots(){introProgress.innerHTML="";for(var i=0;i<introFrames.length;i++){var d=document.createElement("div");d.className="introDot";introProgress.appendChild(d)}}
-function applyIntroViewportMode(){var mobile=window.matchMedia("(max-width: 700px)").matches;introOverlay.classList.toggle("intro-mobile",mobile);introOverlay.classList.toggle("intro-desktop",!mobile)}
+function applyIntroViewportMode(){var w=viewW(),h=viewH();var mobile=(w<=700)||(h>w&&w<=900);introOverlay.classList.toggle("intro-mobile",mobile);introOverlay.classList.toggle("intro-desktop",!mobile);fitIntroImages()}
+function fitIntroImages(){var w=viewW(),h=viewH();if(!w||!h)return;var mobile=introOverlay.classList.contains("intro-mobile");var mobileImg=document.querySelector(".introArtMobile"),desktopImg=document.querySelector(".introArtDesktop");var img=mobile?mobileImg:desktopImg,other=mobile?desktopImg:mobileImg;if(!img)return;if(other){other.style.display="none"}img.style.display="block";img.style.width="100%";img.style.height="100%";img.style.objectPosition="center center";img.style.transform="none";img.style.animation="none";var iw=img.naturalWidth||w,ih=img.naturalHeight||h;var viewAspect=w/h,imgAspect=iw/ih;var diff=Math.abs(viewAspect-imgAspect)/imgAspect;var mode=diff<=0.12?"cover":"contain";img.style.objectFit=mode;introOverlay.dataset.viewport=w+"x"+h;introOverlay.dataset.introFit=mode;introOverlay.dataset.introAspect=viewAspect.toFixed(3)+" / "+imgAspect.toFixed(3)}
 function updateIntroDots(){var dots=introProgress.querySelectorAll(".introDot");for(var i=0;i<dots.length;i++){dots[i].classList.remove("active","done");if(i<introIndex)dots[i].classList.add("done");else if(i===introIndex)dots[i].classList.add("active")}}
 function updateIntroCounter(){var n=String(introIndex+1).padStart(2,"0"),t=String(introFrames.length).padStart(2,"0");introCounter.textContent="FRAME "+n+" / "+t}
 function updateIntroTime(){var d=new Date(),hh=String(d.getUTCHours()).padStart(2,"0"),mm=String(d.getUTCMinutes()).padStart(2,"0"),ss=String(d.getUTCSeconds()).padStart(2,"0");introTime.textContent=hh+":"+mm+":"+ss+" UTC"}
 function introBeep(freq,dur){if(!effectsEnabled)return;try{ensureAudio();if(!audioCtx)return;var o=audioCtx.createOscillator(),g=audioCtx.createGain();o.type="sine";o.frequency.value=freq;g.gain.value=.04;o.connect(g);g.connect(audioCtx.destination);o.start();g.gain.exponentialRampToValueAtTime(.001,audioCtx.currentTime+dur);o.stop(audioCtx.currentTime+dur)}catch(e){}}function playIntroStinger(){if(!effectsEnabled)return;try{playNoise(.34,.16,{type:"bandpass",freq:880,q:8});playTone(110,.42,"sawtooth",.14,{toFreq:58,filter:{type:"lowpass",freq:260,q:5}});playTone(420,.12,"triangle",.06,{delay:.06,toFreq:300});playTone(760,.09,"sine",.05,{delay:.22,toFreq:520});setTimeout(function(){if(effectsEnabled)introBeep(280,.06)},420);setTimeout(function(){if(effectsEnabled)introBeep(220,.06)},620)}catch(e){}}
-function showIntroFrame(idx){if(idx>=introFrames.length){endIntro();return}introFrames.forEach(function(f){f.classList.remove("active","out")});introOverlay.classList.toggle("portrait-active",idx===0);var frame=introFrames[idx];frame.classList.add("active");introIndex=idx;updateIntroDots();updateIntroCounter();introBeep(idx===introFrames.length-1?660:380,.08);if(idx===0)playIntroStinger();if(introAdvanceTimer)clearTimeout(introAdvanceTimer);if(idx<introFrames.length-1){introAdvanceTimer=setTimeout(function(){var cur=introFrames[idx];cur.classList.add("out");setTimeout(function(){showIntroFrame(idx+1)},420)},introDurations[idx])}}
-function startIntro(){unlockAudioFromGesture();if(introAdvanceTimer){clearTimeout(introAdvanceTimer);introAdvanceTimer=null}if(introTimer){clearInterval(introTimer);introTimer=null}introFrames.forEach(function(f){f.classList.remove("active","out")});introOverlay.classList.remove("show","portrait-active","intro-mobile","intro-desktop");applyIntroViewportMode();introActive=true;introIndex=0;buildIntroDots();updateIntroTime();introTimer=setInterval(updateIntroTime,1000);overlay.className="hidden";overlay.style.display="none";overlay.style.pointerEvents="none";introOverlay.classList.add("show");ensureAudio();showIntroFrame(0)}
-function endIntro(){unlockAudioFromGesture();introActive=false;if(introAdvanceTimer){clearTimeout(introAdvanceTimer);introAdvanceTimer=null}if(introTimer){clearInterval(introTimer);introTimer=null}introOverlay.classList.remove("show","portrait-active","intro-mobile","intro-desktop");introFrames.forEach(function(f){f.classList.remove("active","out")});localStorage.setItem("laborVirusIntroSeen","1");introSeen=true;startGame()}
+function showIntroFrame(idx){if(idx>=introFrames.length){endIntro();return}introFrames.forEach(function(f){f.classList.remove("active","out")});introOverlay.classList.toggle("portrait-active",idx===0);fitIntroImages();var frame=introFrames[idx];frame.classList.add("active");introIndex=idx;updateIntroDots();updateIntroCounter();introBeep(idx===introFrames.length-1?660:380,.08);if(idx===0)playIntroStinger();if(introAdvanceTimer)clearTimeout(introAdvanceTimer);if(idx<introFrames.length-1){introAdvanceTimer=setTimeout(function(){var cur=introFrames[idx];cur.classList.add("out");setTimeout(function(){showIntroFrame(idx+1)},420)},introDurations[idx])}}
+function startIntro(){unlockAudioFromGesture();if(introAdvanceTimer){clearTimeout(introAdvanceTimer);introAdvanceTimer=null}if(introTimer){clearInterval(introTimer);introTimer=null}introFrames.forEach(function(f){f.classList.remove("active","out")});introOverlay.classList.remove("show","portrait-active","intro-mobile","intro-desktop");document.body.classList.add("intro-running");applyIntroViewportMode();introActive=true;introIndex=0;buildIntroDots();updateIntroTime();introTimer=setInterval(updateIntroTime,1000);overlay.className="hidden";overlay.style.display="none";overlay.style.pointerEvents="none";introOverlay.classList.add("show");ensureAudio();showIntroFrame(0)}
+function endIntro(){unlockAudioFromGesture();introActive=false;if(introAdvanceTimer){clearTimeout(introAdvanceTimer);introAdvanceTimer=null}if(introTimer){clearInterval(introTimer);introTimer=null}introOverlay.classList.remove("show","portrait-active","intro-mobile","intro-desktop");document.body.classList.remove("intro-running");introFrames.forEach(function(f){f.classList.remove("active","out")});localStorage.setItem("laborVirusIntroSeen","1");introSeen=true;startGame()}
 function skipIntro(){if(!introActive)return;introBeep(220,.06);endIntro()}
 introSkip.addEventListener("click",function(e){e.stopPropagation();unlockAudioFromGesture();skipIntro()},false);introSkip.addEventListener("touchstart",function(e){e.preventDefault();e.stopPropagation();unlockAudioFromGesture();skipIntro()},{passive:false});
 missionStartBtn.addEventListener("click",function(e){e.stopPropagation();unlockAudioFromGesture();endIntro()},false);missionStartBtn.addEventListener("touchstart",function(e){e.preventDefault();e.stopPropagation();unlockAudioFromGesture();endIntro()},{passive:false});
