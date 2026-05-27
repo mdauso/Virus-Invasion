@@ -657,52 +657,10 @@ html,body{min-height:var(--app-height);overscroll-behavior:none}
 }
 
 
-/* ===== v34 fixes: mobile intro above menu, desktop image fully visible ===== */
-#startOverlay.hidden{
-  display:none!important;
-  visibility:hidden!important;
-  pointer-events:none!important;
-}
-
-#introOverlay{
-  z-index:10001!important;
-}
-
-/* Desktop: show full intro image, no side clipping */
-#introOverlay.intro-desktop.portrait-active .introArtDesktop{
-  display:block!important;
-  object-fit:contain!important;
-  object-position:center center!important;
-  background:#000!important;
-  animation:introDesktopContain 9s ease-in-out infinite alternate!important;
-}
-
-#introOverlay.intro-desktop.portrait-active .introArtMobile{
-  display:none!important;
-}
-
-@keyframes introDesktopContain{
-  from{transform:scale(.985)}
-  to{transform:scale(1.0)}
-}
-
-/* Mobile: keep portrait intro visible and above everything */
-#introOverlay.intro-mobile.portrait-active{
-  display:block!important;
-}
-
-#introOverlay.intro-mobile.portrait-active .introArtMobile{
-  display:block!important;
-  object-fit:contain!important;
-  object-position:center center!important;
-  background:#000!important;
-  animation:none!important;
-  transform:none!important;
-}
-
-#introOverlay.intro-mobile.portrait-active .introArtDesktop{
-  display:none!important;
-}
+/* ===== v35 stable intro layering ===== */
+#startOverlay.hidden{display:none!important;visibility:hidden!important;pointer-events:none!important}
+#introOverlay{z-index:10001!important}
+#startOverlay{z-index:10000!important}
 
 </style>
 </head>
