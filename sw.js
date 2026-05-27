@@ -3,7 +3,7 @@
 // Cache-Name muss bei jedem Inhalts-Update inkrementiert werden, damit alte Versionen
 // beim nächsten Start verworfen werden.
 
-const CACHE_VERSION = 'v33-desktop-restored-mobile-restart';
+const CACHE_VERSION = 'v34-mobile-overlay-desktop-full';
 const CACHE_NAME = 'virus-jagd-' + CACHE_VERSION;
 
 // Alle Assets relativ zum SW-Scope. Das Spiel selbst ist eine einzige HTML-Datei,

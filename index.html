@@ -657,18 +657,51 @@ html,body{min-height:var(--app-height);overscroll-behavior:none}
 }
 
 
-/* ===== v33: restore good desktop intro, robust mobile intro restart ===== */
-@media(max-width:700px){
-  #introOverlay.intro-mobile.show.portrait-active{
-    display:block!important;
-    background:#000!important;
-  }
-  #introOverlay.intro-mobile.show.portrait-active #frame1{
-    display:flex!important;
-  }
-  #introOverlay.intro-mobile.show.portrait-active .introArtMobile{
-    display:block!important;
-  }
+/* ===== v34 fixes: mobile intro above menu, desktop image fully visible ===== */
+#startOverlay.hidden{
+  display:none!important;
+  visibility:hidden!important;
+  pointer-events:none!important;
+}
+
+#introOverlay{
+  z-index:10001!important;
+}
+
+/* Desktop: show full intro image, no side clipping */
+#introOverlay.intro-desktop.portrait-active .introArtDesktop{
+  display:block!important;
+  object-fit:contain!important;
+  object-position:center center!important;
+  background:#000!important;
+  animation:introDesktopContain 9s ease-in-out infinite alternate!important;
+}
+
+#introOverlay.intro-desktop.portrait-active .introArtMobile{
+  display:none!important;
+}
+
+@keyframes introDesktopContain{
+  from{transform:scale(.985)}
+  to{transform:scale(1.0)}
+}
+
+/* Mobile: keep portrait intro visible and above everything */
+#introOverlay.intro-mobile.portrait-active{
+  display:block!important;
+}
+
+#introOverlay.intro-mobile.portrait-active .introArtMobile{
+  display:block!important;
+  object-fit:contain!important;
+  object-position:center center!important;
+  background:#000!important;
+  animation:none!important;
+  transform:none!important;
+}
+
+#introOverlay.intro-mobile.portrait-active .introArtDesktop{
+  display:none!important;
 }
 
 </style>
@@ -838,12 +871,12 @@ function collectPowerup(event){if(event){event.preventDefault();event.stopPropag
 function schedulePowerup(){if(!running||paused)return;var delay=rand(9000,15000);powerupTimer=setTimeout(function(){spawnPowerup();schedulePowerup()},delay)}
 function pauseGame(){if(!running||paused)return;paused=true;clearTimers();stopMusic();pauseOverlay.classList.add("show");pauseBtn.textContent="▶"}
 function resumeGame(){if(!paused)return;paused=false;pauseOverlay.classList.remove("show");pauseBtn.textContent="⏸";startMusic();spawnTimer=setInterval(spawnEnemy,spawnDelay);clockTimer=setInterval(tick,1000);difficultyTimer=setInterval(increaseDifficulty,7000);schedulePowerup()}
-function quitToMenu(){paused=false;running=false;clearTimers();stopMusic();document.querySelectorAll(".virus,.powerup").forEach(function(el){el.remove()});pauseOverlay.classList.remove("show");pauseBtn.classList.remove("show");timeBar.classList.remove("show");comboDisplay.classList.remove("show");game.classList.remove("playing","frenzy");frenzyActive=false;refreshPowerupStatus();resetOverlayTexts();overlay.className=""}
+function quitToMenu(){paused=false;running=false;clearTimers();stopMusic();document.querySelectorAll(".virus,.powerup").forEach(function(el){el.remove()});pauseOverlay.classList.remove("show");pauseBtn.classList.remove("show");timeBar.classList.remove("show");comboDisplay.classList.remove("show");game.classList.remove("playing","frenzy");frenzyActive=false;refreshPowerupStatus();resetOverlayTexts();overlay.className="";overlay.style.display="";overlay.style.pointerEvents=""}
 function resetOverlayTexts(){overlayTitle.textContent="Virus-Jagd: Outbreak";overlayText1.textContent="Eine außer Kontrolle geratene Probe hat das Labor geflutet. Zerstöre die mutierten Viren, sichere den Sektor und sammle Rangpunkte für die lokale Bestenliste.";overlayText2.innerHTML="Rote, blaue und gelbe Viren verhalten sich unterschiedlich. Grüne Bonus-Viren bringen Extras. Halte deine Combo, sammle Power-ups wie Zeitbonus, Frenzy und Desinfektionsbombe – und bezwinge das Boss-Virus.";startBtn.textContent="Spiel starten";hideRankResult();renderTopScores()}
 function flashBossAlert(){bossAlert.classList.add("show");setTimeout(function(){bossAlert.classList.remove("show")},2000)}
 function startGameFromButton(event){if(event){event.preventDefault();event.stopPropagation()}if(startLock)return false;startLock=true;setTimeout(function(){startLock=false},300);effectsEnabled=!!soundToggle.checked;musicEnabled=!!musicToggle.checked;updateSoundBadge();var p=unlockAudioFromGesture();var go=function(){startIntro()};if(p&&p.then)p.then(go);else go();return false}window.startGameFromButton=startGameFromButton;
-function startGame(){clearTimers();document.querySelectorAll(".virus,.splat,.explosion-ring,.explosion-particle,.score-popup,.powerup").forEach(function(el){el.remove()});var diff=difficultyMap[selectedDifficulty];score=0;hits=0;misses=0;timeLeft=diff.duration;maxTime=diff.duration;spawnDelay=diff.spawn;running=true;paused=false;bossSpawnedThisRound=0;nextBossAt=12;combo=0;maxCombo=0;scoreMultiplier=1;frenzyActive=false;game.classList.remove("frenzy");refreshPowerupStatus();comboDisplay.classList.remove("show");timeBar.classList.add("show");updateTimeBar();pauseBtn.classList.add("show");pauseBtn.textContent="⏸";updateHud();overlay.className="hidden";game.classList.add("playing");resetOverlayTexts();hideRankResult();soundStart();startMusic();spawnTimer=setInterval(spawnEnemy,spawnDelay);clockTimer=setInterval(tick,1000);difficultyTimer=setInterval(increaseDifficulty,7000);schedulePowerup();for(var j=0;j<5;j++)setTimeout(spawnEnemy,j*220)}
-function stopGame(){running=false;paused=false;clearTimers();game.classList.remove("playing","frenzy");frenzyActive=false;stopMusic();document.querySelectorAll(".virus,.powerup").forEach(function(v){v.remove()});pauseBtn.classList.remove("show");pauseOverlay.classList.remove("show");timeBar.classList.remove("show");comboDisplay.classList.remove("show");refreshPowerupStatus();if(score>highscore){highscore=score;localStorage.setItem("laborVirusHighscoreCinematic",String(highscore))}updateHighscoreDisplay();var shots=hits+misses,accuracy=shots>0?Math.round(hits/shots*100):0,rankScore=calcRankScore(score,accuracy,maxCombo,hits);addLocalScore(score,rankScore,accuracy,maxCombo);overlayTitle.textContent="Sektor gesichert";overlayText1.innerHTML="<strong>Mission abgeschlossen.</strong> Du hast <strong>"+score+"</strong> Spielpunkte und <strong>"+rankScore+"</strong> Rangpunkte erreicht.";overlayText2.innerHTML="Rangpunkte = Spielpunkte + Trefferquote-Bonus + Combo-Bonus + Treffer-Bonus. Sartorius-Elite beginnt erst ab <strong>12.000 Rangpunkten</strong>.";showRankResult(score,rankScore,accuracy,hits,maxCombo);renderTopScores();startBtn.textContent="Noch einmal spielen";overlay.className="";}
+function startGame(){clearTimers();document.querySelectorAll(".virus,.splat,.explosion-ring,.explosion-particle,.score-popup,.powerup").forEach(function(el){el.remove()});var diff=difficultyMap[selectedDifficulty];score=0;hits=0;misses=0;timeLeft=diff.duration;maxTime=diff.duration;spawnDelay=diff.spawn;running=true;paused=false;bossSpawnedThisRound=0;nextBossAt=12;combo=0;maxCombo=0;scoreMultiplier=1;frenzyActive=false;game.classList.remove("frenzy");refreshPowerupStatus();comboDisplay.classList.remove("show");timeBar.classList.add("show");updateTimeBar();pauseBtn.classList.add("show");pauseBtn.textContent="⏸";updateHud();overlay.className="hidden";overlay.style.display="none";overlay.style.pointerEvents="none";game.classList.add("playing");resetOverlayTexts();hideRankResult();soundStart();startMusic();spawnTimer=setInterval(spawnEnemy,spawnDelay);clockTimer=setInterval(tick,1000);difficultyTimer=setInterval(increaseDifficulty,7000);schedulePowerup();for(var j=0;j<5;j++)setTimeout(spawnEnemy,j*220)}
+function stopGame(){running=false;paused=false;clearTimers();game.classList.remove("playing","frenzy");frenzyActive=false;stopMusic();document.querySelectorAll(".virus,.powerup").forEach(function(v){v.remove()});pauseBtn.classList.remove("show");pauseOverlay.classList.remove("show");timeBar.classList.remove("show");comboDisplay.classList.remove("show");refreshPowerupStatus();if(score>highscore){highscore=score;localStorage.setItem("laborVirusHighscoreCinematic",String(highscore))}updateHighscoreDisplay();var shots=hits+misses,accuracy=shots>0?Math.round(hits/shots*100):0,rankScore=calcRankScore(score,accuracy,maxCombo,hits);addLocalScore(score,rankScore,accuracy,maxCombo);overlayTitle.textContent="Sektor gesichert";overlayText1.innerHTML="<strong>Mission abgeschlossen.</strong> Du hast <strong>"+score+"</strong> Spielpunkte und <strong>"+rankScore+"</strong> Rangpunkte erreicht.";overlayText2.innerHTML="Rangpunkte = Spielpunkte + Trefferquote-Bonus + Combo-Bonus + Treffer-Bonus. Sartorius-Elite beginnt erst ab <strong>12.000 Rangpunkten</strong>.";showRankResult(score,rankScore,accuracy,hits,maxCombo);renderTopScores();startBtn.textContent="Noch einmal spielen";overlay.className="";overlay.style.display="";overlay.style.pointerEvents="";}
 function tick(){timeLeft--;updateHud();if(timeLeft<=0)stopGame()}function increaseDifficulty(){if(spawnTimer)clearInterval(spawnTimer);spawnDelay=Math.max(selectedDifficulty==="hard"?280:340,spawnDelay-(selectedDifficulty==="hard"?110:90));spawnTimer=setInterval(spawnEnemy,spawnDelay)}
 function addBossHealthBar(virus,hp){var hpWrap=document.createElement("div");hpWrap.className="boss-hp";var hpFill=document.createElement("div");hpFill.className="boss-hp-fill";hpWrap.appendChild(hpFill);virus.appendChild(hpWrap);virus._hpFill=hpFill;virus._maxHp=hp}
 function spawnEnemy(){if(!running)return;if(hits>=nextBossAt&&bossSpawnedThisRound<3){spawnBoss();bossSpawnedThisRound++;nextBossAt+=12;return}spawnStandardVirus()}
@@ -878,7 +911,7 @@ function updateIntroCounter(){var n=String(introIndex+1).padStart(2,"0"),t=Strin
 function updateIntroTime(){var d=new Date(),hh=String(d.getUTCHours()).padStart(2,"0"),mm=String(d.getUTCMinutes()).padStart(2,"0"),ss=String(d.getUTCSeconds()).padStart(2,"0");introTime.textContent=hh+":"+mm+":"+ss+" UTC"}
 function introBeep(freq,dur){if(!effectsEnabled)return;try{ensureAudio();if(!audioCtx)return;var o=audioCtx.createOscillator(),g=audioCtx.createGain();o.type="sine";o.frequency.value=freq;g.gain.value=.04;o.connect(g);g.connect(audioCtx.destination);o.start();g.gain.exponentialRampToValueAtTime(.001,audioCtx.currentTime+dur);o.stop(audioCtx.currentTime+dur)}catch(e){}}function playIntroStinger(){if(!effectsEnabled)return;try{playNoise(.34,.16,{type:"bandpass",freq:880,q:8});playTone(110,.42,"sawtooth",.14,{toFreq:58,filter:{type:"lowpass",freq:260,q:5}});playTone(420,.12,"triangle",.06,{delay:.06,toFreq:300});playTone(760,.09,"sine",.05,{delay:.22,toFreq:520});setTimeout(function(){if(effectsEnabled)introBeep(280,.06)},420);setTimeout(function(){if(effectsEnabled)introBeep(220,.06)},620)}catch(e){}}
 function showIntroFrame(idx){if(idx>=introFrames.length){endIntro();return}introFrames.forEach(function(f){f.classList.remove("active","out")});introOverlay.classList.toggle("portrait-active",idx===0);var frame=introFrames[idx];frame.classList.add("active");introIndex=idx;updateIntroDots();updateIntroCounter();introBeep(idx===introFrames.length-1?660:380,.08);if(idx===0)playIntroStinger();if(introAdvanceTimer)clearTimeout(introAdvanceTimer);if(idx<introFrames.length-1){introAdvanceTimer=setTimeout(function(){var cur=introFrames[idx];cur.classList.add("out");setTimeout(function(){showIntroFrame(idx+1)},420)},introDurations[idx])}}
-function startIntro(){unlockAudioFromGesture();if(introAdvanceTimer){clearTimeout(introAdvanceTimer);introAdvanceTimer=null}if(introTimer){clearInterval(introTimer);introTimer=null}introFrames.forEach(function(f){f.classList.remove("active","out")});introOverlay.classList.remove("portrait-active","intro-mobile","intro-desktop");applyIntroViewportMode();introActive=true;introIndex=0;buildIntroDots();updateIntroTime();introTimer=setInterval(updateIntroTime,1000);overlay.className="hidden";introOverlay.classList.add("show");ensureAudio();showIntroFrame(0)}
+function startIntro(){unlockAudioFromGesture();if(introAdvanceTimer){clearTimeout(introAdvanceTimer);introAdvanceTimer=null}if(introTimer){clearInterval(introTimer);introTimer=null}introFrames.forEach(function(f){f.classList.remove("active","out")});introOverlay.classList.remove("show","portrait-active","intro-mobile","intro-desktop");applyIntroViewportMode();introActive=true;introIndex=0;buildIntroDots();updateIntroTime();introTimer=setInterval(updateIntroTime,1000);overlay.className="hidden";overlay.style.display="none";overlay.style.pointerEvents="none";introOverlay.classList.add("show");ensureAudio();showIntroFrame(0)}
 function endIntro(){unlockAudioFromGesture();introActive=false;if(introAdvanceTimer){clearTimeout(introAdvanceTimer);introAdvanceTimer=null}if(introTimer){clearInterval(introTimer);introTimer=null}introOverlay.classList.remove("show","portrait-active","intro-mobile","intro-desktop");introFrames.forEach(function(f){f.classList.remove("active","out")});localStorage.setItem("laborVirusIntroSeen","1");introSeen=true;startGame()}
 function skipIntro(){if(!introActive)return;introBeep(220,.06);endIntro()}
 introSkip.addEventListener("click",function(e){e.stopPropagation();unlockAudioFromGesture();skipIntro()},false);introSkip.addEventListener("touchstart",function(e){e.preventDefault();e.stopPropagation();unlockAudioFromGesture();skipIntro()},{passive:false});
